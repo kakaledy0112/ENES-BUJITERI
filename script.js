@@ -129,7 +129,7 @@ function mesajGoster(text) {
   }
 }
 
-// Ürün detayını göster (yeni eklenen kısım)
+// Ürün detayını göster
 function urunDetayGoster() {
   const urlParams = new URLSearchParams(window.location.search);
   const isim = urlParams.get('isim');
@@ -157,7 +157,23 @@ function urunDetayGoster() {
   }
 }
 
-// Sayfa yüklenince
+// Slider (resim geçişi)
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+
+function showSlide(index) {
+  slides.forEach(slide => slide.classList.remove('active'));
+  slides[index].classList.add('active');
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}
+
+setInterval(nextSlide, 3000);
+
+// Sayfa yüklenince çalışacaklar
 window.onload = function() {
   stokGuncelle();
 
