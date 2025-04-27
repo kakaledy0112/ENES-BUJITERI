@@ -72,11 +72,10 @@ function sepetiBosalt() {
 
         setTimeout(() => {
             mesajKutusu.style.display = 'none';
-            window.location.reload(); // mesaj gösterildikten sonra yenile
+            window.location.reload(); // mesajdan sonra sayfa yenile
         }, 2000);
     } else {
         alert("Sepet boşaltıldı!");
         window.location.reload();
     }
-}
-                        }
+        }
