@@ -12,17 +12,22 @@
 
 <header>
   <h1>Ürün Detayı</h1>
-  <nav>
-    <a href="index.html">Ana Sayfa</a> |
-    <a href="sepet.html">Sepeti Görüntüle</a>
+  <button class="menu-toggle" onclick="menuAcKapa()">☰</button>
+  <nav id="menu">
+    <a href="index.html">Ana Sayfa</a>
+    <a href="sepet.html">Sepetim</a>
+    <a href="favoriler.html">Favorilerim</a>
   </nav>
 </header>
 
 <main style="padding: 20px; text-align: center;">
   <div id="urun-detay" style="max-width: 400px; margin: 0 auto;">
-    <!-- Ürün bilgileri buraya script.js tarafından dinamik olarak yüklenecek -->
+    <!-- Ürün detayları burada script.js ile yüklenecek -->
   </div>
 </main>
+
+<!-- YUKARI ÇIK BUTONU -->
+<button id="yukari-btn" title="Yukarı Çık">↑</button>
 
 <footer>
   <div class="iletisim">
