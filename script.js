@@ -1,5 +1,5 @@
-// Ürün Stokları
-const urunStoklari = {
+// Ürün Stokları Başlangıç Değeri
+const baslangicStoklari = {
     "Şık Gümüş Yüzük": 5,
     "Modern Tasarım Yüzük": 7,
     "İnci Kolye": 3,
@@ -8,6 +8,14 @@ const urunStoklari = {
     "Şık Metal Saat": 2
 };
 
+// Sayfa açılınca stok kontrolü
+if (!localStorage.getItem('urunStoklari')) {
+    localStorage.setItem('urunStoklari', JSON.stringify(baslangicStoklari));
+}
+
+// localStorage'dan mevcut stokları çekiyoruz
+let urunStoklari = JSON.parse(localStorage.getItem('urunStoklari'));
+
 // Ürün sepete ekleme
 function sepeteEkle(isim, fiyat, foto) {
     if (urunStoklari[isim] && urunStoklari[isim] > 0) {
@@ -15,11 +23,12 @@ function sepeteEkle(isim, fiyat, foto) {
         sepet.push({ isim: isim, fiyat: fiyat, foto: foto });
         localStorage.setItem('sepet', JSON.stringify(sepet));
 
-        // Stoktan düş
+        // Stoktan düş ve kaydet
         urunStoklari[isim]--;
+        localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
         stokGuncelle();
 
-        // Sepet mesajı
+        // Mesaj göster
         const mesajKutusu = document.getElementById('sepet-mesaji');
         if (mesajKutusu) {
             mesajKutusu.textContent = `✓ ${isim} sepete eklendi!`;
@@ -147,4 +156,9 @@ function stokGuncelle() {
             }
         }
     }
-            }
+}
+
+// Sayfa yüklenince stokları güncelle
+window.onload = function() {
+    stokGuncelle();
+};
