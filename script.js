@@ -8,7 +8,7 @@ const urunStoklari = {
     "Şık Metal Saat": 2
 };
 
-// Geçici Sepet (RAM içinde)
+// Geçici Sepet (Sayfa hafızasında)
 let sepet = [];
 
 // Ürün sepete ekleme
@@ -18,12 +18,10 @@ function sepeteEkle(isim, fiyat, foto) {
         urunStoklari[isim]--;
         stokGuncelle();
 
-        // Mesaj göster
         const mesajKutusu = document.getElementById('sepet-mesaji');
         if (mesajKutusu) {
             mesajKutusu.textContent = `✓ ${isim} sepete eklendi!`;
             mesajKutusu.style.display = 'block';
-
             setTimeout(() => {
                 mesajKutusu.style.display = 'none';
             }, 3000);
@@ -33,20 +31,31 @@ function sepeteEkle(isim, fiyat, foto) {
     }
 }
 
-// Sepeti göster (sayfayı değiştirme yok artık burada)
+// Sepeti Göster (Sepeti URL ile taşıyoruz)
+function sepetiGoster() {
+    const sepetJSON = encodeURIComponent(JSON.stringify(sepet));
+    window.location.href = `sepet.html?veri=${sepetJSON}`;
+}
+
+// Sepeti Listele
 function sepetiListele() {
-    let sepetIcerik = document.getElementById('sepet-icerik');
+    const urlParams = new URLSearchParams(window.location.search);
+    const veri = urlParams.get('veri');
 
-    if (!sepetIcerik) return;
-
-    if (sepet.length === 0) {
-        sepetIcerik.innerHTML = "<p>Sepetiniz boş.</p>";
+    if (!veri) {
+        document.getElementById('sepet-icerik').innerHTML = "<p>Sepetiniz boş.</p>";
         return;
     }
 
-    // Ürünleri gruplandır
+    const sepetVerisi = JSON.parse(decodeURIComponent(veri));
+
+    if (sepetVerisi.length === 0) {
+        document.getElementById('sepet-icerik').innerHTML = "<p>Sepetiniz boş.</p>";
+        return;
+    }
+
     const urunAdetleri = {};
-    sepet.forEach(urun => {
+    sepetVerisi.forEach(urun => {
         if (urunAdetleri[urun.isim]) {
             urunAdetleri[urun.isim].adet++;
         } else {
@@ -72,21 +81,13 @@ function sepetiListele() {
     }
 
     html += `<h3>Toplam: ${toplam} TL</h3>`;
-    html += `<button onclick="sepetiBosalt()">Sepeti Boşalt</button>`;
-    sepetIcerik.innerHTML = html;
-}
-
-// Sepeti boşalt
-function sepetiBosalt() {
-    sepet = []; // RAM içindeki sepeti sıfırla
-    alert("Sepet boşaltıldı!");
-    window.location.reload();
+    document.getElementById('sepet-icerik').innerHTML = html;
 }
 
 // Ürün Arama ve Fiyat Filtreleme
 function urunleriFiltrele() {
-    const arama = document.getElementById('arama').value.toLowerCase();
-    const fiyatFiltre = document.getElementById('fiyat-filtre').value;
+    const arama = document.getElementById('arama') ? document.getElementById('arama').value.toLowerCase() : "";
+    const fiyatFiltre = document.getElementById('fiyat-filtre') ? document.getElementById('fiyat-filtre').value : "";
 
     const tumUrunler = document.querySelectorAll('.product');
 
@@ -108,11 +109,7 @@ function urunleriFiltrele() {
             }
         }
 
-        if (gorunur) {
-            urun.style.display = "block";
-        } else {
-            urun.style.display = "none";
-        }
+        urun.style.display = gorunur ? "block" : "none";
     });
 }
 
@@ -132,8 +129,10 @@ function stokGuncelle() {
     }
 }
 
-// Sayfa açılınca stok güncelle
+// Sayfa açılınca
 window.onload = function() {
     stokGuncelle();
-    sepetiListele();
+    if (window.location.pathname.includes('sepet.html')) {
+        sepetiListele();
+    }
 };
