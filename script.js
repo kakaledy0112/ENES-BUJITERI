@@ -1,18 +1,36 @@
+// Ürün Stokları
+const urunStoklari = {
+    "Şık Gümüş Yüzük": 5,
+    "Modern Tasarım Yüzük": 7,
+    "İnci Kolye": 3,
+    "Minimalist Altın Kolye": 4,
+    "Klasik Deri Saat": 6,
+    "Şık Metal Saat": 2
+};
+
 // Ürün sepete ekleme
 function sepeteEkle(isim, fiyat, foto) {
-    let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
-    sepet.push({ isim: isim, fiyat: fiyat, foto: foto });
-    localStorage.setItem('sepet', JSON.stringify(sepet));
+    if (urunStoklari[isim] && urunStoklari[isim] > 0) {
+        let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
+        sepet.push({ isim: isim, fiyat: fiyat, foto: foto });
+        localStorage.setItem('sepet', JSON.stringify(sepet));
 
-    // Sepet mesajını göster (eğer varsa)
-    const mesajKutusu = document.getElementById('sepet-mesaji');
-    if (mesajKutusu) {
-        mesajKutusu.textContent = `✓ ${isim} sepete eklendi!`;
-        mesajKutusu.style.display = 'block';
+        // Stoktan düş
+        urunStoklari[isim]--;
+        stokGuncelle();
 
-        setTimeout(() => {
-            mesajKutusu.style.display = 'none';
-        }, 3000);
+        // Sepet mesajı
+        const mesajKutusu = document.getElementById('sepet-mesaji');
+        if (mesajKutusu) {
+            mesajKutusu.textContent = `✓ ${isim} sepete eklendi!`;
+            mesajKutusu.style.display = 'block';
+
+            setTimeout(() => {
+                mesajKutusu.style.display = 'none';
+            }, 3000);
+        }
+    } else {
+        alert("Bu ürün tükendi!");
     }
 }
 
@@ -113,4 +131,20 @@ function urunleriFiltrele() {
             urun.style.display = "none";
         }
     });
+}
+
+// Stokları Güncelle
+function stokGuncelle() {
+    for (const isim in urunStoklari) {
+        const stokElement = document.getElementById('stok-' + isim);
+        if (stokElement) {
+            stokElement.textContent = urunStoklari[isim] > 0 ? `Stok: ${urunStoklari[isim]}` : "Tükendi";
+            const button = stokElement.parentElement.querySelector('.sepet-button');
+            if (urunStoklari[isim] <= 0) {
+                button.disabled = true;
+                button.textContent = "Tükendi";
+                button.style.backgroundColor = "#ccc";
+            }
         }
+    }
+            }
