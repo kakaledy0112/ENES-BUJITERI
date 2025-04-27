@@ -64,6 +64,19 @@ function urunSil(index) {
 // Sepeti boşalt
 function sepetiBosalt() {
     localStorage.removeItem('sepet');
-    alert("Sepet boşaltıldı!");
-    window.location.reload();
+    
+    const mesajKutusu = document.getElementById('sepet-mesaji');
+    if (mesajKutusu) {
+        mesajKutusu.textContent = "✓ Sepet boşaltıldı!";
+        mesajKutusu.style.display = 'block';
+
+        setTimeout(() => {
+            mesajKutusu.style.display = 'none';
+            window.location.reload(); // mesaj gösterildikten sonra yenile
+        }, 2000);
+    } else {
+        alert("Sepet boşaltıldı!");
+        window.location.reload();
+    }
+}
                         }
