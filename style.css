@@ -50,6 +50,13 @@ nav a {
   border-radius: 10px;
 }
 
+/* Ürün Açıklamaları */
+.urun-aciklama {
+  font-size: 13px;
+  color: #666;
+  margin: 8px 0;
+}
+
 /* Sepete Ekle Butonu */
 .sepet-button {
   margin-top: 10px;
