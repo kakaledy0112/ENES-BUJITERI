@@ -1,12 +1,12 @@
 // Ürün sepete ekleme
 function sepeteEkle(isim, fiyat, foto) {
     let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
-    sepet.push({ isim: isim, fiyat: fiyat, foto: foto }); // --> ./ EKLEMEDİK, sadece foto
+    sepet.push({ isim: isim, fiyat: fiyat, foto: '/' + foto }); // ---> Buraya dikkat!
     localStorage.setItem('sepet', JSON.stringify(sepet));
     alert(isim + " sepete eklendi!");
 }
 
-// Sepeti göster (index.html içinden)
+// Sepeti göster
 function sepetiGoster() {
     window.location.href = "sepet.html";
 }
@@ -28,7 +28,7 @@ function sepetiListele() {
         toplam += urun.fiyat;
         html += `
             <div class="sepet-urun">
-                <img src="${urun.foto}" alt="${urun.isim}">
+                <img src="${urun.foto}" alt="${urun.isim}" style="width:150px;border-radius:10px;">
                 <p>${urun.isim}</p>
                 <p>${urun.fiyat} TL</p>
             </div>
