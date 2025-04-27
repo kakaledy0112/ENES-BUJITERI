@@ -33,4 +33,32 @@ footer { background-color: #ffe6e6; padding: 20px; text-align: center; margin-to
 /* Sepet Mesajı */ .sepet-mesaji { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background-color: #4CAF50; color: white; padding: 12px 24px; border-radius: 8px; font-weight: bold; display: none; z-index: 9999; animation: fadeInOut 3s forwards; }
 
 @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(-50%) translateY(-20px); } 10% { opacity: 1; transform: translateX(-50%) translateY(0); } 90% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+/* Sepet ürün görünümleri */
+.sepet-urun {
+    display: flex;
+    align-items: center;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
 
+.sepet-bilgi {
+    margin-left: 15px;
+}
+
+.sil-button {
+    background-color: #ff4d4d;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 10px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+}
+
+.sil-button:hover {
+    background-color: #e60000;
+  }
