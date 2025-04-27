@@ -6,27 +6,33 @@
   <title>Sepetim - ENES BUJİTERİ</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
+  <meta name="description" content="ENES BUJİTERİ sepetinizdeki ürünler.">
+  <meta name="keywords" content="ENES BUJİTERİ, sepet, alışveriş sepeti, takı, aksesuar">
 </head>
-
 <body>
 
 <header>
-  <h1>Sepetim</h1>
+  <h1>ENES BUJİTERİ</h1>
   <button class="menu-toggle" onclick="menuAcKapa()">☰</button>
   <nav id="menu">
-    <a href="index.html">Ana Sayfa</a>
+    <a href="index.html#yuzukler">Yüzükler</a>
+    <a href="index.html#kolyeler">Kolyeler</a>
+    <a href="index.html#saatler">Saatler</a>
+    <a href="sepet.html">Sepeti Görüntüle</a>
     <a href="favoriler.html">Favorilerim</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
+    <a href="iletisim.html">İletişim</a>
   </nav>
 </header>
 
-<main style="padding: 20px; text-align: center;">
-  <div id="sepet-icerik" style="max-width: 800px; margin: 0 auto;">
-    <!-- Sepet ürünleri burada listelenecek -->
-  </div>
+<main class="page-content">
+  <section id="sepet">
+    <h2>Sepetim</h2>
+    <div id="sepet-icerik">
+      <!-- Sepet içeriği JavaScript tarafından buraya eklenecek -->
+    </div>
+  </section>
 </main>
-
-<!-- YUKARI ÇIK BUTONU -->
-<button id="yukari-btn" title="Yukarı Çık">↑</button>
 
 <footer>
   <div class="iletisim">
