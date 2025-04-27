@@ -27,9 +27,8 @@ function sepeteEkle(isim, fiyat, foto) {
         urunStoklari[isim]--;
         localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
         stokGuncelle();
-        sepetVerisiniGoster();
 
-        // Mesaj göster
+        // Sepet mesajı
         const mesajKutusu = document.getElementById('sepet-mesaji');
         if (mesajKutusu) {
             mesajKutusu.textContent = `✓ ${isim} sepete eklendi!`;
@@ -49,53 +48,62 @@ function sepetiGoster() {
     window.location.href = "sepet.html";
 }
 
-// Sepet Sayfasında ürünleri listele
+// Sepet Sayfasında ürünleri listele (adetli şekilde)
 function sepetiListele() {
     let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
     let sepetIcerik = document.getElementById('sepet-icerik');
 
-    if (!sepetIcerik) return; // Eğer sepet-icerik yoksa çalışmaz
+    if (!sepetIcerik) return;
 
     if (sepet.length === 0) {
         sepetIcerik.innerHTML = "<p>Sepetiniz boş.</p>";
         return;
     }
 
+    // Ürünleri gruplandır (isimlerine göre adet say)
+    const urunAdetleri = {};
+    sepet.forEach(urun => {
+        if (urunAdetleri[urun.isim]) {
+            urunAdetleri[urun.isim].adet++;
+        } else {
+            urunAdetleri[urun.isim] = { fiyat: urun.fiyat, foto: urun.foto, adet: 1 };
+        }
+    });
+
     let toplam = 0;
     let html = "";
 
-    sepet.forEach(function(urun, index) {
-        toplam += urun.fiyat;
+    for (const isim in urunAdetleri) {
+        const urun = urunAdetleri[isim];
+        toplam += urun.fiyat * urun.adet;
         html += `
             <div class="sepet-urun">
-                <img src="${urun.foto}" alt="${urun.isim}" style="width:100px; border-radius:8px;">
+                <img src="${urun.foto}" alt="${isim}" style="width:100px; border-radius:8px;">
                 <div class="sepet-bilgi">
-                    <p>${urun.isim}</p>
-                    <p>${urun.fiyat} TL</p>
-                    <button class="sil-button" onclick="urunSil(${index})">Ürünü Sil</button>
+                    <p>${isim} - ${urun.adet} Adet</p>
+                    <p>${urun.fiyat * urun.adet} TL</p>
                 </div>
             </div>
         `;
-    });
+    }
 
     html += `<h3>Toplam: ${toplam} TL</h3>`;
     html += `<button onclick="sepetiBosalt()">Sepeti Boşalt</button>`;
     sepetIcerik.innerHTML = html;
 }
 
-// Tekli ürün silme
+// Tekli ürün silme (şu anda tekli silme yok, gerekirse ekleriz)
 function urunSil(index) {
     let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
     sepet.splice(index, 1);
     localStorage.setItem('sepet', JSON.stringify(sepet));
     sepetiListele();
-    sepetVerisiniGoster();
 }
 
-// Sepeti boşalt
+// Sepeti tamamen boşalt
 function sepetiBosalt() {
     localStorage.removeItem('sepet');
-    
+
     const mesajKutusu = document.getElementById('sepet-mesaji');
     if (mesajKutusu) {
         mesajKutusu.textContent = "✓ Sepet boşaltıldı!";
@@ -160,16 +168,7 @@ function stokGuncelle() {
     }
 }
 
-// Sepet Verisini Ekrana Yazdır
-function sepetVerisiniGoster() {
-    const testAlani = document.getElementById('test-alani');
-    if (testAlani) {
-        testAlani.innerText = localStorage.getItem('sepet') || "Sepet boş.";
-    }
-}
-
-// Sayfa açılınca
+// Sayfa açılınca stok güncelle
 window.onload = function() {
     stokGuncelle();
-    sepetVerisiniGoster();
 };
