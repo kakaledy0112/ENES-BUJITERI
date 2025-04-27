@@ -92,3 +92,36 @@ footer {
     font-weight: bold;
     cursor: pointer;
 }
+
+/* SEPET SAYFASI için EKSTRA TASARIMLAR */
+
+.sepet-urun {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 20px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+
+.sepet-urun img {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.geri-don {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #ff9999;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.geri-don:hover {
+    background-color: #ff6666;
+}
