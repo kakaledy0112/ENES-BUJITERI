@@ -6,13 +6,17 @@
   <title>Favorilerim - ENES BUJİTERİ</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
 
 <header>
   <h1>Favorilerim</h1>
-  <button class="menu-toggle" onclick="menuAcKapa()">☰</button>
+  <button class="menu-toggle" onclick="menuAcKapa()">
+    <i class="fas fa-bars"></i>
+  </button>
   <nav id="menu">
     <a href="index.html">Ana Sayfa</a>
     <a href="sepet.html">Sepetim</a>
@@ -20,40 +24,20 @@
 </header>
 
 <main style="padding: 20px; text-align: center;">
-  <div id="favoriler-icerik" style="max-width: 800px; margin: 0 auto;">
-    <!-- Favori ürünler burada listelenecek -->
-  </div>
+  <div id="favoriler-icerik" style="max-width: 800px; margin: 20px auto;">
+    <p>Favorileriniz yükleniyor...</p> </div>
 </main>
 
-<!-- YUKARI ÇIK BUTONU -->
-<button id="yukari-btn" title="Yukarı Çık">↑</button>
+<button id="yukari-btn" title="Yukarı Çık">
+  <i class="fas fa-arrow-up"></i>
+</button>
 
 <footer>
   <div class="iletisim">
-    <a href="https://wa.me/90XXXXXXXXXX" target="_blank">WhatsApp</a> |
-    <a href="https://instagram.com/XXXXXXXX" target="_blank">Instagram</a>
+    <a href="https://wa.me/90XXXXXXXXXX" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
+    <a href="https://instagram.com/XXXXXXXX" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
   </div>
 </footer>
 
 </body>
 </html>
-function urunlereFavoriIkonEkle() {
-  const urunler = document.querySelectorAll('.product');
-
-  urunler.forEach(urun => {
-    const isim = urun.querySelector('p')?.innerText;
-    const fiyatText = urun.querySelectorAll('p')[1]?.innerText;
-    const foto = urun.querySelector('img')?.src;
-
-    if (isim && fiyatText && foto) {
-      const fiyat = parseFloat(fiyatText.replace(' TL', '').replace(',', '.'));
-
-      let favoriIcon = document.createElement('span');
-      favoriIcon.innerHTML = '❤';
-      favoriIcon.classList.add('favori-icon');
-      favoriIcon.setAttribute('onclick', `favorilereEkle('${isim}', ${fiyat}, '${foto}')`);
-
-      urun.appendChild(favoriIcon);
-    }
-  });
-}
