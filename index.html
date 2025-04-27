@@ -20,8 +20,8 @@
     <a href="sepet.html">Sepeti Görüntüle</a>
   </nav>
 
-  <div id="sepet-mesaji" class="sepet-mesaji" style="display:none;">
-    ✓ Ürün sepete eklendi!
+  <div id="sepet-mesaji" class="sepet-mesaji">
+    <span id="sepet-mesaji-icerik">✓ Ürün sepete eklendi!</span>
     <br>
     <button onclick="sepetiGoster()">Sepeti Görüntüle</button>
   </div>
@@ -39,7 +39,7 @@
 
 <main>
 
-<!-- Yüzükler -->
+<!-- YÜZÜKLER -->
 <section id="yuzukler">
   <h2>Yüzükler</h2>
   <div class="urunler">
@@ -61,6 +61,7 @@
     </div>
   </div>
 </section>
+
 <!-- KOLYELER -->
 <section id="kolyeler">
   <h2>Kolyeler</h2>
@@ -73,7 +74,6 @@
       <p id="stok-İnci Kolye">Stok: 3</p>
       <button class="sepet-button" onclick="sepeteEkle('İnci Kolye', 349, 'kolye1.jpg')">Sepete Ekle</button>
     </div>
-
     <div class="product">
       <div class="indirim-etiketi">%10 İndirim</div>
       <img src="kolye2.jpg" alt="Minimalist Altın Kolye">
@@ -97,7 +97,6 @@
       <p id="stok-Klasik Deri Saat">Stok: 6</p>
       <button class="sepet-button" onclick="sepeteEkle('Klasik Deri Saat', 799, 'saat1.jpg')">Sepete Ekle</button>
     </div>
-
     <div class="product">
       <div class="indirim-etiketi">%10 İndirim</div>
       <img src="saat2.jpg" alt="Şık Metal Saat">
@@ -107,8 +106,7 @@
       <button class="sepet-button" onclick="sepeteEkle('Şık Metal Saat', 899, 'saat2.jpg')">Sepete Ekle</button>
     </div>
   </div>
-        </section>
-<!-- Aynı şekilde kolyeler ve saatler de olacak, ister misin onları da hemen ekleyeyim? -->
+</section>
 
 </main>
 
@@ -120,4 +118,4 @@
 </footer>
 
 </body>
-  </html>
+        </html>
