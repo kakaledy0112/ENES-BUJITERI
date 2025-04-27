@@ -4,35 +4,46 @@ body {
   margin: 0;
   padding: 0;
   background: linear-gradient(to bottom, #fff9f9, #fff1e6);
+  line-height: 1.6; /* Okunabilirlik artırıldı */
+  color: #333; /* Metin rengi ayarlandı */
 }
 
 /* Başlık */
 header {
   text-align: center;
-  padding: 20px;
+  padding: 15px 20px; /* Padding mobil için ayarlandı */
   background-color: #ff8c66;
   color: white;
   position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Gölge eklendi */
+}
+
+header h1 {
+    margin: 0; /* Başlık boşluğu kaldırıldı */
+    font-size: 24px; /* Mobil için font boyutu ayarlandı */
 }
 
 /* Menü Toggle Butonu */
 .menu-toggle {
-  display: none;
+  display: none; /* Varsayılan olarak gizli */
   font-size: 28px;
   background: none;
   border: none;
   color: white;
   cursor: pointer;
   position: absolute;
-  top: 20px;
+  top: 50%; /* Dikeyde ortalandı */
   right: 20px;
+  transform: translateY(-50%); /* Dikeyde ortalandı */
   z-index: 1100;
 }
 
 /* Navigasyon */
 nav {
   margin-top: 10px;
-  z-index: 1000; /* EKLENDİ */
+  z-index: 1000;
+  /* Geçiş animasyonu eklendi */
+  transition: all 0.3s ease-in-out;
 }
 
 nav a {
@@ -40,27 +51,35 @@ nav a {
   text-decoration: none;
   color: white;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px; /* Mobil için font boyutu ayarlandı */
+  transition: color 0.3s ease; /* Renk geçiş animasyonu */
 }
+
+nav a:hover {
+    color: #ffe5e5; /* Hover rengi */
+}
+
 
 /* DUYURU KUTUSU */
 .duyuru-kutusu {
   background: linear-gradient(90deg, #ff4d4d, #ff944d);
   color: white;
   text-align: center;
-  padding: 12px;
-  font-size: 20px;
+  padding: 10px; /* Padding mobil için ayarlandı */
+  font-size: 18px; /* Mobil için font boyutu ayarlandı */
   font-weight: bold;
+  margin-bottom: 20px;
 }
 
 /* SLIDER */
 .slider {
   position: relative;
   width: 100%;
-  height: 250px;
+  height: 200px; /* Mobil için yükseklik ayarlandı */
   overflow: hidden;
   margin-bottom: 20px;
-  border-radius: 12px;
+  border-radius: 8px; /* Kenar yuvarlaklığı ayarlandı */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .slide {
@@ -86,21 +105,24 @@ nav a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 25px;
-  padding: 20px;
+  gap: 15px; /* Boşluk mobil için ayarlandı */
+  padding: 10px; /* Padding mobil için ayarlandı */
 }
 
 .product {
   background: #fff;
-  border-radius: 20px;
-  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
-  width: 220px;
-  padding: 20px;
+  border-radius: 15px; /* Kenar yuvarlaklığı ayarlandı */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Gölge ayarlandı */
+  width: 180px; /* Mobil için genişlik ayarlandı */
+  padding: 15px; /* Padding mobil için ayarlandı */
   text-align: center;
   position: relative;
-  transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(30px); /* Animasyon mesafesi ayarlandı */
+  display: flex; /* İçerik dikeyde hizalama için */
+  flex-direction: column; /* İçerik dikey hizalama için */
+  justify-content: space-between; /* İçerik dikey hizalama için */
 }
 
 .product.show {
@@ -109,79 +131,83 @@ nav a {
 }
 
 .product:hover {
-  transform: scale(1.08);
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05); /* Hover büyüme oranı ayarlandı */
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2); /* Hover gölge ayarlandı */
   border: 2px solid #ff8c66;
 }
 
 .product img {
   width: 100%;
-  border-radius: 15px;
+  border-radius: 10px; /* Kenar yuvarlaklığı ayarlandı */
+  margin-bottom: 10px; /* Resim altına boşluk */
 }
 
 /* Ürün Açıklamaları */
 .urun-aciklama {
-  font-size: 13px;
+  font-size: 12px; /* Mobil için font boyutu ayarlandı */
   color: #777;
-  margin: 8px 0;
+  margin: 5px 0; /* Boşluk ayarlandı */
 }
 
 /* Yıldızlar */
 .urun-yildiz {
   color: gold;
   margin: 5px 0;
-  font-size: 16px;
+  font-size: 14px; /* Mobil için font boyutu ayarlandı */
 }
 
 /* Sepete Ekle Butonu */
 .sepet-button {
   margin-top: 10px;
-  background: linear-gradient(to right, #ff4d4d, #ff944d);
+  background: linear-gradient(to right, #ff6b6b, #ffad60); /* Renkler güncellendi */
   color: white;
   border: none;
-  padding: 12px;
+  padding: 10px; /* Padding mobil için ayarlandı */
   width: 100%;
-  border-radius: 8px;
+  border-radius: 6px; /* Kenar yuvarlaklığı ayarlandı */
   cursor: pointer;
   font-weight: bold;
   transition: background 0.3s ease;
+  font-size: 14px; /* Mobil için font boyutu ayarlandı */
 }
 
 .sepet-button:hover {
-  background: linear-gradient(to right, #ff944d, #ff4d4d);
+  background: linear-gradient(to right, #ffad60, #ff6b6b); /* Hover renkleri güncellendi */
 }
 
 /* İndirim Etiketi */
 .indirim-etiketi {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 8px; /* Pozisyon ayarlandı */
+  left: 8px; /* Pozisyon ayarlandı */
   background-color: #ff4d4d;
   color: white;
-  padding: 6px 10px;
-  font-size: 13px;
-  border-radius: 8px;
+  padding: 4px 8px; /* Padding ayarlandı */
+  font-size: 11px; /* Mobil için font boyutu ayarlandı */
+  border-radius: 6px; /* Kenar yuvarlaklığı ayarlandı */
+  z-index: 1; /* Üste çıkması sağlandı */
 }
 
 /* Fırsat Etiketi */
 .firsat-etiketi {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8px; /* Pozisyon ayarlandı */
+  right: 8px; /* Pozisyon ayarlandı */
   background-color: #25D366;
   color: white;
-  padding: 6px 10px;
-  font-size: 13px;
-  border-radius: 8px;
+  padding: 4px 8px; /* Padding ayarlandı */
+  font-size: 11px; /* Mobil için font boyutu ayarlandı */
+  border-radius: 6px; /* Kenar yuvarlaklığı ayarlandı */
+  z-index: 1; /* Üste çıkması sağlandı */
 }
 
 /* Favori İkonu */
 .favori-icon {
-  font-size: 24px;
+  font-size: 20px; /* Mobil için font boyutu ayarlandı */
   cursor: pointer;
   color: #ccc;
   transition: color 0.3s ease;
-  margin-bottom: 10px;
+  margin-top: 8px; /* Üstüne boşluk eklendi */
   display: inline-block;
 }
 
@@ -192,25 +218,25 @@ nav a {
 /* Güvenli Alışveriş Kutusu */
 .guvenli-alisveris {
   background-color: #ffe5e5;
-  padding: 30px 20px;
+  padding: 20px 15px; /* Padding mobil için ayarlandı */
   text-align: center;
   border-top: 2px solid #ff8c66;
   border-bottom: 2px solid #ff8c66;
-  margin-top: 40px;
+  margin-top: 30px; /* Marjin ayarlandı */
 }
 
 .guvenli-alisveris h3 {
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Marjin ayarlandı */
   color: #ff4d4d;
-  font-size: 24px;
+  font-size: 20px; /* Mobil için font boyutu ayarlandı */
 }
 
 .guvenli-ikonlar {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
-  font-size: 18px;
+  gap: 15px; /* Boşluk mobil için ayarlandı */
+  font-size: 16px; /* Mobil için font boyutu ayarlandı */
   color: #555;
 }
 
@@ -218,18 +244,18 @@ nav a {
 #yukari-btn {
   display: none;
   position: fixed;
-  bottom: 25px;
-  right: 25px;
+  bottom: 20px; /* Pozisyon mobil için ayarlandı */
+  right: 20px; /* Pozisyon mobil için ayarlandı */
   z-index: 1001;
-  font-size: 22px;
+  font-size: 20px; /* Mobil için font boyutu ayarlandı */
   background-color: #ff4d4d;
   color: white;
   border: none;
   outline: none;
-  padding: 12px 16px;
+  padding: 10px 14px; /* Padding ayarlandı */
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3); /* Gölge ayarlandı */
   transition: background-color 0.3s;
 }
 
@@ -240,10 +266,22 @@ nav a {
 /* Footer */
 footer {
   background-color: #ff8c66;
-  padding: 15px;
+  padding: 12px; /* Padding mobil için ayarlandı */
   text-align: center;
   color: white;
   margin-top: 30px;
+  font-size: 14px; /* Mobil için font boyutu ayarlandı */
+}
+
+.iletisim a {
+    color: white;
+    text-decoration: none;
+    margin: 0 8px;
+    transition: color 0.3s ease;
+}
+
+.iletisim a:hover {
+    color: #ffe5e5;
 }
 
 /* Sepet Ürünleri */
@@ -251,40 +289,121 @@ footer {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.sepet-urun img {
+    width: 80px; /* Mobil için görsel boyutu */
+    border-radius: 5px;
+    margin-right: 15px;
 }
 
 .sepet-bilgi {
-  margin-left: 15px;
+  flex-grow: 1; /* Bilginin kalan alanı kaplaması */
 }
+
+.sepet-bilgi p {
+    margin: 5px 0;
+    font-size: 14px; /* Mobil için font boyutu */
+}
+
 
 /* Menü için responsive */
 @media (max-width: 768px) {
+  header h1 {
+      font-size: 20px; /* Daha küçük cihazlar için başlık boyutu */
+  }
+
   .menu-toggle {
-    display: block;
+    display: block; /* Mobil cihazlarda göster */
   }
 
   nav {
-    display: none;
+    display: none; /* Varsayılan olarak gizli */
     flex-direction: column;
     background-color: #ff8c66;
     position: absolute;
-    top: 70px;
-    right: 20px;
-    width: 200px;
-    padding: 15px;
-    border-radius: 10px;
+    top: 60px; /* Başlığın altına hizala */
+    right: 10px; /* Sağdan boşluk */
+    width: 180px; /* Genişlik ayarlandı */
+    padding: 10px; /* Padding ayarlandı */
+    border-radius: 8px; /* Kenar yuvarlaklığı */
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    z-index: 1000; /* EKLENDİ */
+    z-index: 1000;
   }
 
   nav.acik {
-    display: flex;
+    display: flex; /* Açıkken göster */
   }
 
   nav a {
     display: block;
-    margin: 10px 0;
+    margin: 8px 0; /* Boşluk ayarlandı */
     color: white;
-    font-size: 18px;
+    font-size: 16px; /* Font boyutu */
   }
+
+  .urunler {
+      gap: 10px; /* Daha küçük boşluk */
+      padding: 5px; /* Daha az padding */
+  }
+
+  .product {
+      width: calc(50% - 20px); /* İki ürün yan yana sığacak şekilde genişlik */
+      margin: 0 auto; /* Ortala */
+      padding: 10px; /* Padding ayarlandı */
+  }
+
+  .product img {
+      margin-bottom: 5px; /* Resim altı boşluk */
+  }
+
+    .indirim-etiketi, .firsat-etiketi {
+        font-size: 10px; /* Etiket font boyutu küçültüldü */
+        padding: 3px 6px; /* Etiket padding ayarlandı */
     }
+
+    .favori-icon {
+        font-size: 18px; /* Favori ikon boyutu küçültüldü */
+    }
+
+    .guvenli-alisveris {
+        padding: 15px 10px; /* Güvenli alışveriş kutusu paddingi */
+    }
+
+    .guvenli-alisveris h3 {
+        font-size: 18px; /* Güvenli alışveriş başlığı font boyutu */
+    }
+
+    .guvenli-ikonlar {
+        font-size: 14px; /* Güvenli ikonlar font boyutu */
+        gap: 10px; /* Güvenli ikonlar arası boşluk */
+    }
+
+    #yukari-btn {
+        bottom: 15px; /* Yukarı çık butonu pozisyonu */
+        right: 15px; /* Yukarı çık butonu pozisyonu */
+        font-size: 18px; /* Yukarı çık butonu font boyutu */
+        padding: 8px 12px; /* Yukarı çık butonu paddingi */
+    }
+
+    footer {
+        padding: 10px; /* Footer paddingi */
+        font-size: 12px; /* Footer font boyutu */
+    }
+
+     .sepet-urun img {
+        width: 60px; /* Sepet ürün görsel boyutu küçültüldü */
+        margin-right: 10px;
+    }
+
+    .sepet-bilgi p {
+        font-size: 12px; /* Sepet bilgi font boyutu */
+    }
+
+    .sepet-button {
+        font-size: 12px; /* Buton font boyutu küçültüldü */
+        padding: 8px; /* Buton paddingi ayarlandı */
+    }
+  }
