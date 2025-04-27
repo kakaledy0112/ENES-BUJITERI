@@ -8,35 +8,15 @@ let baslangicStoklari = {
   "Şık Metal Renk Saat": 2
 };
 
-// localStorage'dan stokları al veya başlangıç stoklarını ayarla
-let urunStoklari = JSON.parse(localStorage.getItem('urunStoklari'));
-if (!urunStoklari) {
-  urunStoklari = baslangicStoklari;
-  localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
-} else {
-    // Eğer localStorage'da stoklar varsa, yeni eklenen ürünlerin stoğunu ekle
-    let stoklarGuncellendi = false;
-    for (const isim in baslangicStoklari) {
-        if (!urunStoklari.hasOwnProperty(isim)) {
-            urunStoklari[isim] = baslangicStoklari[isim];
-            stoklarGuncellendi = true;
-        }
-    }
-    if (stoklarGuncellendi) {
-         localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
-    }
+if (!localStorage.getItem('urunStoklari')) {
+  localStorage.setItem('urunStoklari', JSON.stringify(baslangicStoklari));
 }
 
-
-// localStorage'dan sepeti al
+let urunStoklari = JSON.parse(localStorage.getItem('urunStoklari'));
 let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
-// localStorage'dan favorileri al
-let favoriler = JSON.parse(localStorage.getItem('favoriler')) || [];
-
 
 // Sepete ürün ekle
 function sepeteEkle(isim, fiyat, foto) {
-  // Stok kontrolü
   if (urunStoklari[isim] > 0) {
     sepet.push({ isim, fiyat, foto });
     localStorage.setItem('sepet', JSON.stringify(sepet));
@@ -47,13 +27,13 @@ function sepeteEkle(isim, fiyat, foto) {
     stokGuncelle();
     mesajGoster("✓ Ürün sepete eklendi!");
   } else {
-    // alert yerine mesajGoster kullanıldı
-    mesajGoster("Bu ürün tükendi!");
+    alert("Bu ürün tükendi!");
   }
 }
 
 // Sepeti listele
 function sepetiListele() {
+  let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
   let sepetIcerik = document.getElementById('sepet-icerik');
 
   if (!sepetIcerik) return;
@@ -80,95 +60,46 @@ function sepetiListele() {
     toplam += urun.fiyat * urun.adet;
     html += `
       <div class="sepet-urun">
-        <img src="${urun.foto}" alt="${isim}" style="width:80px; border-radius:8px;">
+        <img src="${urun.foto}" alt="${isim}" style="width:100px; border-radius:8px;">
         <div class="sepet-bilgi">
           <p>${isim} - ${urun.adet} Adet</p>
-          <p>${(urun.fiyat * urun.adet).toFixed(2)} TL</p> </div>
-         <button class="sepet-urun-cikar" onclick="sepettenCikar('${isim}')">X</button> </div>
+          <p>${urun.fiyat * urun.adet} TL</p>
+        </div>
+      </div>
     `;
   }
 
-  html += `<h3>Toplam: ${toplam.toFixed(2)} TL</h3>`; // Toplam fiyat formatı düzeltildi
-  html += `<button class="sepet-bosalt-button" onclick="sepetiBosalt()">Sepeti Boşalt</button>`; // Buton class'ı eklendi
+  html += `<h3>Toplam: ${toplam} TL</h3>`;
+  html += `<button onclick="sepetiBosalt()">Sepeti Boşalt</button>`;
   sepetIcerik.innerHTML = html;
 }
 
-// Sepetten belirli bir ürünü çıkar
-function sepettenCikar(isim) {
-    let yeniSepet = sepet.filter(urun => urun.isim !== isim);
-    // Stokları geri ekle (Çıkarılan ürün adedi kadar)
-    const cikarilanUrunler = sepet.filter(urun => urun.isim === isim);
-    cikarilanUrunler.forEach(() => {
-        if (baslangicStoklari.hasOwnProperty(isim)) { // Başlangıç stoklarında varsa stoğu artır
-             if (urunStoklari.hasOwnProperty(isim)) {
-                 urunStoklari[isim]++;
-             } else {
-                 urunStoklari[isim] = 1; // Daha önce stokta olmayan bir ürün favorilere eklenip çıkarılırsa
-             }
-        }
-    });
-
-
-    sepet = yeniSepet;
-    localStorage.setItem('sepet', JSON.stringify(sepet));
-    localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari)); // Güncellenmiş stoğu kaydet
-
-    mesajGoster(`✓ "${isim}" sepetten çıkarıldı!`);
-    sepetiListele(); // Sepeti yeniden listele
-    stokGuncelle(); // Stok durumunu güncelle
-}
-
-
 // Sepeti boşalt
 function sepetiBosalt() {
-  sepet = []; // Sepeti boşalt
   localStorage.removeItem('sepet');
-
-   // Tüm stokları başlangıç değerlerine döndür
-  urunStoklari = JSON.parse(JSON.stringify(baslangicStoklari)); // Deep copy
-  localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
-
+  localStorage.removeItem('urunStoklari');
 
   mesajGoster("✓ Sepet boşaltıldı!");
 
-  // Eğer sepet sayfasındaysak 2.5 saniye sonra anasayfaya yönlendir
-  if (window.location.pathname.includes('sepet.html')) {
-     setTimeout(() => {
-        window.location.href = "index.html";
-     }, 2500);
-  } else {
-      sepetiListele(); // Başka sayfadaysak sepeti güncelle (boş görünür)
-      stokGuncelle(); // Stok durumunu güncelle
-  }
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 2500);
 }
 
 // Stokları güncelle
 function stokGuncelle() {
-  const stokElementleri = document.querySelectorAll('.stok-bilgi'); // Tüm stok bilgi elementlerini seç
-
-  stokElementleri.forEach(stokElement => {
-      const urunElementi = stokElement.closest('.product'); // En yakın product elementini bul
-      const isim = urunElementi?.querySelector('p')?.innerText; // Ürün adını al
-
-      if (isim && urunStoklari.hasOwnProperty(isim)) {
-           const stok = urunStoklari[isim];
-           stokElement.textContent = stok > 0 ? `Stok: ${stok}` : "Tükendi";
-           const button = urunElementi.querySelector('.sepet-button');
-           if (button) {
-                if (stok <= 0) {
-                  button.disabled = true;
-                  button.textContent = "Tükendi";
-                  button.style.backgroundColor = "#ccc";
-                  button.style.cursor = "not-allowed"; // Cursor stilini ayarla
-                } else {
-                   button.disabled = false;
-                   button.textContent = "Sepete Ekle";
-                   button.style.backgroundColor = ""; // Stili sıfırla
-                    button.style.cursor = "pointer"; // Cursor stilini ayarla
-                }
-           }
+  for (const isim in urunStoklari) {
+    const stokElement = document.getElementById('stok-' + isim);
+    if (stokElement) {
+      stokElement.textContent = urunStoklari[isim] > 0 ? `Stok: ${urunStoklari[isim]}` : "Tükendi";
+      const button = stokElement.parentElement.querySelector('.sepet-button');
+      if (urunStoklari[isim] <= 0) {
+        button.disabled = true;
+        button.textContent = "Tükendi";
+        button.style.backgroundColor = "#ccc";
       }
-  });
+    }
+  }
 }
 
 // Fade-in animasyonu
@@ -177,7 +108,7 @@ function fadeInUrunler() {
 
   urunler.forEach(urun => {
     const rect = urun.getBoundingClientRect();
-    if (rect.top < window.innerHeight - 100 && rect.bottom > 0) { // Görünürlük kontrolü iyileştirildi
+    if (rect.top < window.innerHeight - 50) {
       urun.classList.add('show');
     }
   });
@@ -185,46 +116,23 @@ function fadeInUrunler() {
 
 // Mesaj kutusu göster
 function mesajGoster(text) {
-  // Mesaj kutusu HTML'de tanımlı değilse ekle
-  let mesajKutusu = document.getElementById('sepet-mesaji');
-  if (!mesajKutusu) {
-      mesajKutusu = document.createElement('div');
-      mesajKutusu.id = 'sepet-mesaji';
-      mesajKutusu.style.position = 'fixed';
-      mesajKutusu.style.bottom = '20px';
-      mesajKutusu.style.left = '50%';
-      mesajKutusu.style.transform = 'translateX(-50%)';
-      mesajKutusu.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-      mesajKutusu.style.color = 'white';
-      mesajKutusu.style.padding = '10px 20px';
-      mesajKutusu.style.borderRadius = '5px';
-      mesajKutusu.style.zIndex = '10000';
-      mesajKutusu.style.opacity = '0';
-      mesajKutusu.style.transition = 'opacity 0.5s ease-in-out';
-      mesajKutusu.style.pointerEvents = 'none'; // Tıklamayı engelle
-      document.body.appendChild(mesajKutusu);
-
-      let mesajIcerik = document.createElement('div');
-      mesajIcerik.id = 'sepet-mesaji-icerik';
-      mesajKutusu.appendChild(mesajIcerik);
-  }
-
+  const mesajKutusu = document.getElementById('sepet-mesaji');
   const mesajIcerik = document.getElementById('sepet-mesaji-icerik');
 
   if (mesajKutusu && mesajIcerik) {
     mesajIcerik.innerText = text;
-    mesajKutusu.style.opacity = '1';
-
+    mesajKutusu.classList.add('fade-in');
+    mesajKutusu.classList.remove('fade-out');
+    mesajKutusu.style.display = 'block';
 
     setTimeout(() => {
-      mesajKutusu.style.opacity = '0';
+      mesajKutusu.classList.remove('fade-in');
+      mesajKutusu.classList.add('fade-out');
     }, 2000);
 
-    // Transition süresi kadar sonra display none yap
     setTimeout(() => {
-       mesajKutusu.style.display = 'none';
-    }, 2500); // Transition süresi + biraz gecikme
-     mesajKutusu.style.display = 'block'; // Göstermeden önce display block yap
+      mesajKutusu.style.display = 'none';
+    }, 2500);
   }
 }
 
@@ -241,40 +149,41 @@ function urunDetayGoster() {
   if (isim && fiyat && foto && aciklama && urunDetayDiv) {
     const mesaj = encodeURIComponent(`Merhaba, "${isim}" ürününüz ile ilgileniyorum. Fiyat: ${fiyat} TL`);
     urunDetayDiv.innerHTML = `
-      <img src="${foto}" alt="${isim}" style="width:100%; max-width: 300px; border-radius:10px; margin-bottom:15px;"> <h2>${isim}</h2>
+      <img src="${foto}" alt="${isim}" style="width:100%; border-radius:10px; margin-bottom:15px;">
+      <h2>${isim}</h2>
       <h3>${fiyat} TL</h3>
-      <p style="color:#666; margin-bottom: 15px;">${decodeURIComponent(aciklama)}</p> <button class="sepet-button" onclick="sepeteEkle('${isim.replace(/'/g, "\\'")}', ${fiyat}, '${foto}')">Sepete Ekle</button> <br><br>
-      <a href="https://wa.me/90XXXXXXXXXX?text=${mesaj}" target="_blank" style="text-decoration: none;"> <button class="sepet-button" style="background-color:#25D366; margin-top: 0;">WhatsApp ile Sipariş Ver</button> </a>
+      <p style="color:#666;">${decodeURIComponent(aciklama)}</p>
+      <button class="sepet-button" onclick="sepeteEkle('${isim}', ${fiyat}, '${foto}')">Sepete Ekle</button>
+      <br><br>
+      <a href="https://wa.me/90XXXXXXXXXX?text=${mesaj}" target="_blank">
+        <button class="sepet-button" style="background-color:#25D366;">WhatsApp ile Sipariş Ver</button>
+      </a>
     `;
-  } else if(urunDetayDiv) { // urunDetayDiv varsa ama bilgiler eksikse
+  } else {
     urunDetayDiv.innerHTML = "<p>Ürün bilgileri yüklenemedi.</p>";
   }
 }
 
-// Favorilere ürün ekle/çıkar (Toggle fonksiyonu)
-function favoriToggle(ikonElement, isim, fiyat, foto) {
+// Favorilere ürün ekle
+function favorilereEkle(isim, fiyat, foto) {
   let favoriler = JSON.parse(localStorage.getItem('favoriler')) || [];
   const zatenVar = favoriler.some(fav => fav.isim === isim);
 
-  if (zatenVar) {
-    // Favoriden çıkar
-    favoriler = favoriler.filter(fav => fav.isim !== isim);
-    localStorage.setItem('favoriler', JSON.stringify(favoriler));
-    mesajGoster(`✓ "${isim}" favorilerden çıkarıldı!`);
-    ikonElement.classList.remove('aktif'); // İkonu deaktif yap
-     // Eğer favoriler sayfasındaysak listeyi güncelle
-    if (window.location.pathname.includes('favoriler.html')) {
-       favorileriListele();
-    }
-  } else {
-    // Favoriye ekle
+  if (!zatenVar) {
     favoriler.push({ isim, fiyat, foto });
     localStorage.setItem('favoriler', JSON.stringify(favoriler));
-    mesajGoster(`✓ "${isim}" favorilere eklendi!`);
-    ikonElement.classList.add('aktif'); // İkonu aktif yap
+    mesajGoster("✓ Ürün favorilere eklendi!");
+  } else {
+    mesajGoster("Bu ürün zaten favorilerde!");
   }
-}
 
+  const ikonlar = document.querySelectorAll('.favori-icon');
+  ikonlar.forEach(ikon => {
+    if (ikon.getAttribute('onclick')?.includes(isim)) {
+      ikon.classList.add('aktif');
+    }
+  });
+}
 
 // Favorileri listele
 function favorileriListele() {
@@ -283,9 +192,6 @@ function favorileriListele() {
 
   if (!favorilerIcerik) return;
 
-   // Yükleniyor mesajını kaldır
-  favorilerIcerik.innerHTML = '';
-
   if (favoriler.length === 0) {
     favorilerIcerik.innerHTML = "<p>Favorileriniz boş.</p>";
     return;
@@ -293,110 +199,68 @@ function favorileriListele() {
 
   let html = '<div class="urunler">';
   favoriler.forEach(urun => {
-    // Favoriden çıkar butonu ve sepete ekle butonu eklendi
     html += `
       <div class="product">
-         <div class="favori-icon aktif" onclick="favoriToggle(this, '${urun.isim.replace(/'/g, "\\'")}', ${urun.fiyat}, '${urun.foto}')">❤</div> <img src="${urun.foto}" alt="${urun.isim}" style="width:100%; border-radius:10px;">
+        <img src="${urun.foto}" alt="${urun.isim}" style="width:100%; border-radius:10px;">
         <p>${urun.isim}</p>
         <div class="urun-yildiz">⭐⭐⭐⭐⭐</div>
         <p>${urun.fiyat} TL</p>
-        <button class="sepet-button" onclick="sepeteEkle('${urun.isim.replace(/'/g, "\\'")}', ${urun.fiyat}, '${urun.foto}')">Sepete Ekle</button> </div>
+        <button class="sepet-button" style="margin-top:8px; background-color:#ff6666;" onclick="favoridenCikar('${urun.isim}')">Favoriden Çıkar</button>
+      </div>
     `;
   });
   html += '</div>';
 
   favorilerIcerik.innerHTML = html;
-   stokGuncelle(); // Stok durumunu güncelle
-    urunlereFavoriIkonDurumunuGuncelle(); // İkon durumlarını güncelle
 }
 
+// Favoriden çıkar
+function favoridenCikar(isim) {
+  let favoriler = JSON.parse(localStorage.getItem('favoriler')) || [];
+  favoriler = favoriler.filter(fav => fav.isim !== isim);
+  localStorage.setItem('favoriler', JSON.stringify(favoriler));
 
-// Ürünlere favori ikonu ekle ve durumunu ayarla
+  mesajGoster("✓ Ürün favorilerden çıkarıldı!");
+  favorileriListele();
+}
+
+// Ürünlere favori ikonu ekle
 function urunlereFavoriIkonEkle() {
-  const urunler = document.querySelectorAll('.product:not(.favoriler-sayfasi .product)'); // Favoriler sayfasındaki ürünleri hariç tut
+  const urunler = document.querySelectorAll('.product');
 
   urunler.forEach(urun => {
     const isim = urun.querySelector('p')?.innerText;
-    // Fiyat bilgisi HTML'de farklı bir p etiketinde olduğu varsayıldı
-    const fiyatTextElement = urun.querySelector('p:nth-of-type(2)'); // Fiyatın ikinci p etiketinde olduğunu varsayalım
-    const fiyat = fiyatTextElement ? parseFloat(fiyatTextElement.innerText.replace(' TL', '').replace(',', '.')) : 0;
+    const fiyatText = urun.querySelectorAll('p')[1]?.innerText;
     const foto = urun.querySelector('img')?.src;
 
-    if (isim && fiyat && foto) {
-      // Daha önce eklenmemişse ikonu ekle
-      if (!urun.querySelector('.favori-icon')) {
-         let favoriIcon = document.createElement('span');
-         favoriIcon.innerHTML = '❤';
-         favoriIcon.classList.add('favori-icon');
-         // İkon tıklandığında favoriToggle fonksiyonunu çağır
-         favoriIcon.setAttribute('onclick', `favoriToggle(this, '${isim.replace(/'/g, "\\'")}', ${fiyat}, '${foto}')`);
+    if (isim && fiyatText && foto) {
+      const fiyat = parseFloat(fiyatText.replace(' TL', '').replace(',', '.'));
 
-         // Ürün elementinin içine ekle (genellikle resmin altına veya başlığın yanına uygun bir yere)
-         // Burada ürün elementinin başına ekleniyor, isteğe göre yeri değiştirilebilir.
-         urun.insertBefore(favoriIcon, urun.firstChild);
-      }
+      let favoriIcon = document.createElement('span');
+      favoriIcon.innerHTML = '❤';
+      favoriIcon.classList.add('favori-icon');
+      favoriIcon.setAttribute('onclick', `favorilereEkle('${isim}', ${fiyat}, '${foto}')`);
+
+      urun.appendChild(favoriIcon);
     }
   });
-  urunlereFavoriIkonDurumunuGuncelle(); // İkon durumlarını ekledikten sonra güncelle
 }
-
-// Ürünlerin üzerindeki favori ikonlarının aktif/deaktif durumunu güncelle
-function urunlereFavoriIkonDurumunuGuncelle() {
-     let favoriler = JSON.parse(localStorage.getItem('favoriler')) || [];
-     const ikonlar = document.querySelectorAll('.favori-icon');
-
-     ikonlar.forEach(ikon => {
-        const onclickAttribute = ikon.getAttribute('onclick');
-        if (onclickAttribute) {
-             // onclick stringinden ürün adını çıkarmaya çalış
-            const match = onclickAttribute.match(/favoriToggle\(this,\s*'(.*?)'/);
-            if (match && match[1]) {
-                const isim = match[1].replace(/\\'/g, "'"); // Kaçırılmış tek tırnakları geri al
-                 // Bu ürün favorilerde var mı kontrol et
-                const favorilerdeVar = favoriler.some(fav => fav.isim === isim);
-                if (favorilerdeVar) {
-                    ikon.classList.add('aktif');
-                } else {
-                    ikon.classList.remove('aktif');
-                }
-            }
-        }
-     });
-}
-
 
 // Slider
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
-let slideInterval;
 
 function showSlide(index) {
   slides.forEach(slide => slide.classList.remove('active'));
-  if (slides[index]) { // Slaytın varlığını kontrol et
-      slides[index].classList.add('active');
-  }
+  slides[index].classList.add('active');
 }
 
 function nextSlide() {
-   if (slides.length > 0) { // Slayt varsa devam et
-      currentSlide = (currentSlide + 1) % slides.length;
-      showSlide(currentSlide);
-   }
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
 }
 
-function startSlider() {
-    if (slides.length > 1) { // Birden fazla slayt varsa interval başlat
-        showSlide(currentSlide); // İlk slaytı göster
-        slideInterval = setInterval(nextSlide, 3000);
-    } else if (slides.length === 1) { // Tek slayt varsa sadece onu göster
-        showSlide(0);
-    }
-     // Slayt yoksa bir şey yapma
-}
-
-function stopSlider() {
-    clearInterval(slideInterval);
-}
+setInterval(nextSlide, 3000);
 
 // Yukarı Çık Butonu
 const yukariBtn = document.getElementById("yukari-btn");
@@ -423,41 +287,64 @@ function menuAcKapa() {
 
 // Sayfa yüklenince çalışacaklar
 window.onload = function() {
-  stokGuncelle(); // Sayfa yüklendiğinde stok durumlarını güncelle
+  stokGuncelle();
 
-  // Hangi sayfada olduğumuzu kontrol et ve ilgili fonksiyonu çalıştır
   if (window.location.pathname.includes('sepet.html')) {
     sepetiListele();
-  } else if (window.location.pathname.includes('urun-detay.html')) {
-    urunDetayGoster();
-  } else if (window.location.pathname.includes('favoriler.html')) {
-    favorileriListele();
-     // Favoriler sayfasında da ürün ikonlarını ekle ve durumunu güncelle
-    urunlereFavoriIkonEkle();
-    urunlereFavoriIkonDurumunuGuncelle();
-  } else {
-     // Anasayfa veya diğer sayfalar
-    urunlereFavoriIkonEkle(); // Ürün ikonlarını ekle
-    urunlereFavoriIkonDurumunuGuncelle(); // İkon durumlarını güncelle
-    fadeInUrunler(); // Fade-in animasyonunu başlat
-    startSlider(); // Slider'ı başlat
   }
 
+  if (window.location.pathname.includes('urun-detay.html')) {
+    urunDetayGoster();
+  }
+
+  if (window.location.pathname.includes('favoriler.html')) {
+    favorileriListele();
+  }
+
+  urunlereFavoriIkonEkle();
+  fadeInUrunler();
 };
 
-// Sayfa kapatılırken slider intervalini temizle (isteğe bağlı)
-window.onbeforeunload = function() {
-    stopSlider();
-};
 
-// Scroll olayını dinle (Fade-in animasyonu için)
-window.addEventListener('scroll', fadeInUrunler);
+// Smooth scrolling for navigation links
+document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
 
-// DOMContentLoaded fired before window.onload
-document.addEventListener('DOMContentLoaded', (event) => {
-    // HTML yüklendikten hemen sonra stokları ve ikonları güncellemek için çağırılabilir
-    // window.onload içinde de çağrıldığı için burada tekrar çağırmaya gerek yok ama sayfa yapısına göre değerlendirilebilir.
-    // stokGuncelle();
-    // urunlereFavoriIkonEkle();
-    // urunlereFavoriIkonDurumunuGuncelle();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+
+        // Close the mobile menu after clicking a link
+        const menu = document.getElementById("menu");
+        if (menu.classList.contains("acik")) {
+            menu.classList.remove("acik");
+        }
+    });
 });
+
+
+// Basic search functionality
+document.getElementById('search-button')?.addEventListener('click', handleSearch);
+document.getElementById('search-input')?.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        handleSearch();
+    }
+});
+
+function handleSearch() {
+    const searchTerm = document.getElementById('search-input').value.toLowerCase();
+    const products = document.querySelectorAll('.product');
+
+    products.forEach(product => {
+        const productName = product.querySelector('p')?.innerText.toLowerCase() || '';
+        const productDescription = product.querySelector('.urun-aciklama')?.innerText.toLowerCase() || '';
+
+        if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
+            product.style.display = 'block'; // Show the product
+        } else {
+            product.style.display = 'none'; // Hide the product
+        }
+    });
+      }
+      
