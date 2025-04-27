@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENES BUJİTERİ</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script> <!-- Yeni eklenen satır -->
 </head>
 <body>
     <header>
@@ -15,6 +16,7 @@
             <a href="#kolyeler">Kolyeler</a>
             <a href="#saatler">Saatler</a>
         </nav>
+        <button onclick="sepetiGoster()" class="sepeti-goster-button">Sepeti Görüntüle</button>
     </header>
 
     <section id="yuzukler">
@@ -23,13 +25,13 @@
             <div class="indirim-etiketi">%20 İndirim</div>
             <img src="yuzuk1.jpg" alt="Şık Gümüş Yüzük">
             <p>Şık Gümüş Yüzük - 249 TL</p>
-            <button class="sepet-button">Sepete Ekle</button>
+            <button class="sepet-button" onclick="sepeteEkle('Şık Gümüş Yüzük', 249)">Sepete Ekle</button>
         </div>
         <div class="product">
             <div class="indirim-etiketi">%20 İndirim</div>
             <img src="yuzuk2.jpg" alt="Minimalist Yüzük">
             <p>Minimalist Yüzük - 199 TL</p>
-            <button class="sepet-button">Sepete Ekle</button>
+            <button class="sepet-button" onclick="sepeteEkle('Minimalist Yüzük', 199)">Sepete Ekle</button>
         </div>
     </section>
 
@@ -39,13 +41,13 @@
             <div class="indirim-etiketi">%15 İndirim</div>
             <img src="kolye1.jpg" alt="Taşlı Kolye">
             <p>Taşlı Kolye - 349 TL</p>
-            <button class="sepet-button">Sepete Ekle</button>
+            <button class="sepet-button" onclick="sepeteEkle('Taşlı Kolye', 349)">Sepete Ekle</button>
         </div>
         <div class="product">
             <div class="indirim-etiketi">%15 İndirim</div>
             <img src="kolye2.jpg" alt="Altın Kaplama Kolye">
             <p>Altın Kaplama Kolye - 399 TL</p>
-            <button class="sepet-button">Sepete Ekle</button>
+            <button class="sepet-button" onclick="sepeteEkle('Altın Kaplama Kolye', 399)">Sepete Ekle</button>
         </div>
     </section>
 
@@ -55,13 +57,13 @@
             <div class="indirim-etiketi">%10 İndirim</div>
             <img src="saat1.jpg" alt="Klasik Saat">
             <p>Klasik Saat - 599 TL</p>
-            <button class="sepet-button">Sepete Ekle</button>
+            <button class="sepet-button" onclick="sepeteEkle('Klasik Saat', 599)">Sepete Ekle</button>
         </div>
         <div class="product">
             <div class="indirim-etiketi">%10 İndirim</div>
             <img src="saat2.jpg" alt="Modern Saat">
             <p>Modern Saat - 649 TL</p>
-            <button class="sepet-button">Sepete Ekle</button>
+            <button class="sepet-button" onclick="sepeteEkle('Modern Saat', 649)">Sepete Ekle</button>
         </div>
     </section>
 
@@ -72,4 +74,4 @@
         </div>
     </footer>
 </body>
-                </html>
+    </html>
