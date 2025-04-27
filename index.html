@@ -12,12 +12,13 @@
 
 <header>
   <h1>ENES BUJİTERİ</h1>
-  <p>En Güzel Anlar, En Güzel Takılarla!</p>
-  <nav>
+  <button class="menu-toggle" onclick="menuAcKapa()">☰</button>
+  <nav id="menu">
     <a href="#yuzukler">Yüzükler</a>
     <a href="#kolyeler">Kolyeler</a>
     <a href="#saatler">Saatler</a>
     <a href="sepet.html">Sepeti Görüntüle</a>
+    <a href="favoriler.html">Favorilerim</a>
   </nav>
 </header>
 
@@ -45,24 +46,32 @@
 <section id="yuzukler">
   <h2>Yüzükler</h2>
   <div class="urunler">
+    <!-- Ürün 1 -->
     <div class="product">
       <div class="indirim-etiketi">%10 İndirim</div>
+      <div class="firsat-etiketi">Fırsat Ürünü</div>
       <img src="yuzuk1.jpg" alt="Şık Gümüş Renk Yüzük">
       <a href="urun-detay.html?isim=Şık Gümüş Renk Yüzük&fiyat=249&foto=yuzuk1.jpg&aciklama=Parlak%20gümüş%20renkli%20modern%20yüzük.">
         <p>Şık Gümüş Renk Yüzük</p>
       </a>
+      <div class="urun-yildiz">⭐⭐⭐⭐☆</div>
+      <span class="favori-icon" onclick="favorilereEkle('Şık Gümüş Renk Yüzük', 249, 'yuzuk1.jpg')">❤️</span>
       <p>249 TL</p>
       <p class="urun-aciklama">Parlak gümüş renkli modern yüzük.</p>
       <p id="stok-Şık Gümüş Renk Yüzük">Stok: 5</p>
       <button class="sepet-button" onclick="sepeteEkle('Şık Gümüş Renk Yüzük', 249, 'yuzuk1.jpg')">Sepete Ekle</button>
     </div>
 
+    <!-- Ürün 2 -->
     <div class="product">
       <div class="indirim-etiketi">%10 İndirim</div>
+      <div class="firsat-etiketi">Fırsat Ürünü</div>
       <img src="yuzuk2.jpg" alt="Modern Tasarım Yüzük">
       <a href="urun-detay.html?isim=Modern Tasarım Yüzük&fiyat=199&foto=yuzuk2.jpg&aciklama=Minimalist%20çizgileriyle%20günlük%20kullanım%20için%20şık%20bir%20tercih.">
         <p>Modern Tasarım Yüzük</p>
       </a>
+      <div class="urun-yildiz">⭐⭐⭐⭐⭐</div>
+      <span class="favori-icon" onclick="favorilereEkle('Modern Tasarım Yüzük', 199, 'yuzuk2.jpg')">❤️</span>
       <p>199 TL</p>
       <p class="urun-aciklama">Minimalist çizgileriyle günlük kullanım için şık bir tercih.</p>
       <p id="stok-Modern Tasarım Yüzük">Stok: 7</p>
@@ -75,24 +84,32 @@
 <section id="kolyeler">
   <h2>Kolyeler</h2>
   <div class="urunler">
+    <!-- Ürün 3 -->
     <div class="product">
       <div class="indirim-etiketi">%10 İndirim</div>
+      <div class="firsat-etiketi">Fırsat Ürünü</div>
       <img src="kolye1.jpg" alt="İnci Görünümlü Kolye">
       <a href="urun-detay.html?isim=İnci Görünümlü Kolye&fiyat=349&foto=kolye1.jpg&aciklama=İnci%20görünümlü%20zarif%20tasarım%20kolye.">
         <p>İnci Görünümlü Kolye</p>
       </a>
+      <div class="urun-yildiz">⭐⭐⭐⭐☆</div>
+      <span class="favori-icon" onclick="favorilereEkle('İnci Görünümlü Kolye', 349, 'kolye1.jpg')">❤️</span>
       <p>349 TL</p>
       <p class="urun-aciklama">İnci görünümlü zarif tasarım kolye.</p>
       <p id="stok-İnci Görünümlü Kolye">Stok: 3</p>
       <button class="sepet-button" onclick="sepeteEkle('İnci Görünümlü Kolye', 349, 'kolye1.jpg')">Sepete Ekle</button>
     </div>
 
+    <!-- Ürün 4 -->
     <div class="product">
       <div class="indirim-etiketi">%10 İndirim</div>
+      <div class="firsat-etiketi">Fırsat Ürünü</div>
       <img src="kolye2.jpg" alt="Minimalist Altın Renk Kolye">
       <a href="urun-detay.html?isim=Minimalist Altın Renk Kolye&fiyat=599&foto=kolye2.jpg&aciklama=Hafif%20yapısıyla%20altın%20renk%20modern%20kolye.">
         <p>Minimalist Altın Renk Kolye</p>
       </a>
+      <div class="urun-yildiz">⭐⭐⭐⭐⭐</div>
+      <span class="favori-icon" onclick="favorilereEkle('Minimalist Altın Renk Kolye', 599, 'kolye2.jpg')">❤️</span>
       <p>599 TL</p>
       <p class="urun-aciklama">Hafif yapısıyla altın renk modern kolye.</p>
       <p id="stok-Minimalist Altın Renk Kolye">Stok: 4</p>
@@ -105,24 +122,32 @@
 <section id="saatler">
   <h2>Saatler</h2>
   <div class="urunler">
+    <!-- Ürün 5 -->
     <div class="product">
       <div class="indirim-etiketi">%10 İndirim</div>
+      <div class="firsat-etiketi">Fırsat Ürünü</div>
       <img src="saat1.jpg" alt="Klasik Deri Saat">
       <a href="urun-detay.html?isim=Klasik Deri Saat&fiyat=799&foto=saat1.jpg&aciklama=Şıklık%20ve%20rahatlığı%20bir%20arada%20sunan%20klasik%20model.">
         <p>Klasik Deri Saat</p>
       </a>
+      <div class="urun-yildiz">⭐⭐⭐⭐☆</div>
+      <span class="favori-icon" onclick="favorilereEkle('Klasik Deri Saat', 799, 'saat1.jpg')">❤️</span>
       <p>799 TL</p>
       <p class="urun-aciklama">Şıklık ve rahatlığı bir arada sunan klasik model.</p>
       <p id="stok-Klasik Deri Saat">Stok: 6</p>
       <button class="sepet-button" onclick="sepeteEkle('Klasik Deri Saat', 799, 'saat1.jpg')">Sepete Ekle</button>
     </div>
 
+    <!-- Ürün 6 -->
     <div class="product">
       <div class="indirim-etiketi">%10 İndirim</div>
+      <div class="firsat-etiketi">Fırsat Ürünü</div>
       <img src="saat2.jpg" alt="Şık Metal Renk Saat">
       <a href="urun-detay.html?isim=Şık Metal Renk Saat&fiyat=899&foto=saat2.jpg&aciklama=Modern%20çizgili%2C%20parlak%20metal%20renkli%20saat.">
         <p>Şık Metal Renk Saat</p>
       </a>
+      <div class="urun-yildiz">⭐⭐⭐⭐⭐</div>
+      <span class="favori-icon" onclick="favorilereEkle('Şık Metal Renk Saat', 899, 'saat2.jpg')">❤️</span>
       <p>899 TL</p>
       <p class="urun-aciklama">Modern çizgili, parlak metal renkli saat.</p>
       <p id="stok-Şık Metal Renk Saat">Stok: 2</p>
@@ -131,7 +156,22 @@
   </div>
 </section>
 
+<!-- GÜVENLİ ALIŞVERİŞ ALANI -->
+<section class="guvenli-alisveris">
+  <h3>Güvenli Alışveriş Garantisi</h3>
+  <div class="guvenli-ikonlar">
+    <span>✔️ Visa</span>
+    <span>✔️ MasterCard</span>
+    <span>✔️ SSL Sertifikalı</span>
+    <span>✔️ Hızlı Teslimat</span>
+    <span>✔️ Güvenli Ödeme</span>
+  </div>
+</section>
+
 </main>
+
+<!-- YUKARI ÇIK BUTONU -->
+<button id="yukari-btn" title="Yukarı Çık">↑</button>
 
 <footer>
   <div class="iletisim">
