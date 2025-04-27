@@ -1,7 +1,135 @@
-// (Zaten daha önce aşağıdaki fonksiyonlar vardı)  
-// sepeteEkle, stokGuncelle, urunleriFiltrele, sepetiBosalt, sepetiListele vs...
+// Başlangıç stoklar
+let baslangicStoklari = {
+  "Şık Gümüş Renk Yüzük": 5,
+  "Modern Tasarım Yüzük": 7,
+  "İnci Görünümlü Kolye": 3,
+  "Minimalist Altın Renk Kolye": 4,
+  "Klasik Deri Saat": 6,
+  "Şık Metal Renk Saat": 2
+};
 
-// Yeni: Ürün Detayı Sayfası Bilgilerini Göster
+if (!localStorage.getItem('urunStoklari')) {
+  localStorage.setItem('urunStoklari', JSON.stringify(baslangicStoklari));
+}
+
+let urunStoklari = JSON.parse(localStorage.getItem('urunStoklari'));
+let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
+
+// Sepete ürün ekle
+function sepeteEkle(isim, fiyat, foto) {
+  if (urunStoklari[isim] > 0) {
+    sepet.push({ isim, fiyat, foto });
+    localStorage.setItem('sepet', JSON.stringify(sepet));
+
+    urunStoklari[isim]--;
+    localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
+
+    stokGuncelle();
+    mesajGoster("✓ Ürün sepete eklendi!");
+  } else {
+    alert("Bu ürün tükendi!");
+  }
+}
+
+// Sepeti görüntüle
+function sepetiGoster() {
+  window.location.href = "sepet.html";
+}
+
+// Sepeti listele
+function sepetiListele() {
+  let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
+  let sepetIcerik = document.getElementById('sepet-icerik');
+
+  if (!sepetIcerik) return;
+
+  if (sepet.length === 0) {
+    sepetIcerik.innerHTML = "<p>Sepetiniz boş.</p>";
+    return;
+  }
+
+  const urunAdetleri = {};
+  sepet.forEach(urun => {
+    if (urunAdetleri[urun.isim]) {
+      urunAdetleri[urun.isim].adet++;
+    } else {
+      urunAdetleri[urun.isim] = { fiyat: urun.fiyat, foto: urun.foto, adet: 1 };
+    }
+  });
+
+  let toplam = 0;
+  let html = "";
+
+  for (const isim in urunAdetleri) {
+    const urun = urunAdetleri[isim];
+    toplam += urun.fiyat * urun.adet;
+    html += `
+      <div class="sepet-urun">
+        <img src="${urun.foto}" alt="${isim}" style="width:100px; border-radius:8px;">
+        <div class="sepet-bilgi">
+          <p>${isim} - ${urun.adet} Adet</p>
+          <p>${urun.fiyat * urun.adet} TL</p>
+        </div>
+      </div>
+    `;
+  }
+
+  html += `<h3>Toplam: ${toplam} TL</h3>`;
+  html += `<button onclick="sepetiBosalt()">Sepeti Boşalt</button>`;
+  sepetIcerik.innerHTML = html;
+}
+
+// Sepeti boşalt
+function sepetiBosalt() {
+  localStorage.removeItem('sepet');
+  localStorage.removeItem('urunStoklari');
+
+  mesajGoster("✓ Sepet boşaltıldı!");
+
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 2500);
+}
+
+// Stokları güncelle
+function stokGuncelle() {
+  for (const isim in urunStoklari) {
+    const stokElement = document.getElementById('stok-' + isim);
+    if (stokElement) {
+      stokElement.textContent = urunStoklari[isim] > 0 ? `Stok: ${urunStoklari[isim]}` : "Tükendi";
+      const button = stokElement.parentElement.querySelector('.sepet-button');
+      if (urunStoklari[isim] <= 0) {
+        button.disabled = true;
+        button.textContent = "Tükendi";
+        button.style.backgroundColor = "#ccc";
+      }
+    }
+  }
+}
+
+// Fade-in/fade-out mesaj göster
+function mesajGoster(text) {
+  const mesajKutusu = document.getElementById('sepet-mesaji');
+  const mesajIcerik = document.getElementById('sepet-mesaji-icerik');
+
+  if (mesajKutusu && mesajIcerik) {
+    mesajIcerik.innerText = text;
+    mesajKutusu.classList.add('fade-in');
+    mesajKutusu.classList.remove('fade-out');
+    mesajKutusu.style.display = 'block';
+
+    setTimeout(() => {
+      mesajKutusu.classList.remove('fade-in');
+      mesajKutusu.classList.add('fade-out');
+    }, 2000);
+
+    setTimeout(() => {
+      mesajKutusu.style.display = 'none';
+    }, 2500);
+  }
+}
+
+// Ürün detayını göster (yeni eklenen kısım)
 function urunDetayGoster() {
   const urlParams = new URLSearchParams(window.location.search);
   const isim = urlParams.get('isim');
@@ -12,19 +140,24 @@ function urunDetayGoster() {
   const urunDetayDiv = document.getElementById('urun-detay');
 
   if (isim && fiyat && foto && aciklama && urunDetayDiv) {
+    const mesaj = encodeURIComponent(`Merhaba, "${isim}" ürününüz ile ilgileniyorum. Fiyat: ${fiyat} TL`);
     urunDetayDiv.innerHTML = `
       <img src="${foto}" alt="${isim}" style="width:100%; border-radius:10px; margin-bottom:15px;">
       <h2>${isim}</h2>
       <h3>${fiyat} TL</h3>
       <p style="color:#666;">${decodeURIComponent(aciklama)}</p>
       <button class="sepet-button" onclick="sepeteEkle('${isim}', ${fiyat}, '${foto}')">Sepete Ekle</button>
+      <br><br>
+      <a href="https://wa.me/90XXXXXXXXXX?text=${mesaj}" target="_blank">
+        <button class="sepet-button" style="background-color:#25D366;">WhatsApp ile Sipariş Ver</button>
+      </a>
     `;
   } else {
     urunDetayDiv.innerHTML = "<p>Ürün bilgileri yüklenemedi.</p>";
   }
 }
 
-// Sayfa açıldığında çalışacaklar
+// Sayfa yüklenince
 window.onload = function() {
   stokGuncelle();
 
