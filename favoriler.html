@@ -6,36 +6,38 @@
   <title>Favorilerim - ENES BUJİTERİ</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta name="description" content="ENES BUJİTERİ favori ürünleriniz.">
+  <meta name="keywords" content="ENES BUJİTERİ, favorilerim, takı, aksesuar">
 </head>
-
 <body>
 
 <header>
-  <h1>Favorilerim</h1>
-  <button class="menu-toggle" onclick="menuAcKapa()">
-    <i class="fas fa-bars"></i>
-  </button>
+  <h1>ENES BUJİTERİ</h1>
+  <button class="menu-toggle" onclick="menuAcKapa()">☰</button>
   <nav id="menu">
-    <a href="index.html">Ana Sayfa</a>
-    <a href="sepet.html">Sepetim</a>
+    <a href="index.html#yuzukler">Yüzükler</a>
+    <a href="index.html#kolyeler">Kolyeler</a>
+    <a href="index.html#saatler">Saatler</a>
+    <a href="sepet.html">Sepeti Görüntüle</a>
+    <a href="favoriler.html">Favorilerim</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
+    <a href="iletisim.html">İletişim</a>
   </nav>
 </header>
 
-<main style="padding: 20px; text-align: center;">
-  <div id="favoriler-icerik" style="max-width: 800px; margin: 20px auto;">
-    <p>Favorileriniz yükleniyor...</p> </div>
+<main class="page-content">
+  <section id="favoriler">
+    <h2>Favorilerim</h2>
+    <div id="favoriler-icerik">
+      <!-- Favori içeriği JavaScript tarafından buraya eklenecek -->
+    </div>
+  </section>
 </main>
-
-<button id="yukari-btn" title="Yukarı Çık">
-  <i class="fas fa-arrow-up"></i>
-</button>
 
 <footer>
   <div class="iletisim">
-    <a href="https://wa.me/90XXXXXXXXXX" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
-    <a href="https://instagram.com/XXXXXXXX" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+    <a href="https://wa.me/90XXXXXXXXXX" target="_blank">WhatsApp</a> |
+    <a href="https://instagram.com/XXXXXXXX" target="_blank">Instagram</a>
   </div>
 </footer>
 
