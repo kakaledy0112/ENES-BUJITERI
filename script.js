@@ -60,7 +60,7 @@ function sepetiListele() {
         return;
     }
 
-    // Ürünleri gruplandır (isimlerine göre adet say)
+    // Ürünleri gruplandır (aynı ürünleri birleştir)
     const urunAdetleri = {};
     sepet.forEach(urun => {
         if (urunAdetleri[urun.isim]) {
@@ -90,14 +90,6 @@ function sepetiListele() {
     html += `<h3>Toplam: ${toplam} TL</h3>`;
     html += `<button onclick="sepetiBosalt()">Sepeti Boşalt</button>`;
     sepetIcerik.innerHTML = html;
-}
-
-// Tekli ürün silme (şu anda tekli silme yok, gerekirse ekleriz)
-function urunSil(index) {
-    let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
-    sepet.splice(index, 1);
-    localStorage.setItem('sepet', JSON.stringify(sepet));
-    sepetiListele();
 }
 
 // Sepeti tamamen boşalt
@@ -168,7 +160,7 @@ function stokGuncelle() {
     }
 }
 
-// Sayfa açılınca stok güncelle
+// Sayfa açılınca stokları güncelle
 window.onload = function() {
     stokGuncelle();
 };
