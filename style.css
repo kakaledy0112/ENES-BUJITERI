@@ -26,11 +26,13 @@ header {
   position: absolute;
   top: 20px;
   right: 20px;
+  z-index: 1100;
 }
 
 /* Navigasyon */
 nav {
   margin-top: 10px;
+  z-index: 1000; /* EKLENDİ */
 }
 
 nav a {
@@ -218,7 +220,7 @@ nav a {
   position: fixed;
   bottom: 25px;
   right: 25px;
-  z-index: 99;
+  z-index: 1001;
   font-size: 22px;
   background-color: #ff4d4d;
   color: white;
@@ -272,6 +274,7 @@ footer {
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000; /* EKLENDİ */
   }
 
   nav.acik {
