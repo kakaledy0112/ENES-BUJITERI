@@ -1,7 +1,7 @@
 // Ürün sepete ekleme
 function sepeteEkle(isim, fiyat, foto) {
     let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
-    sepet.push({ isim: isim, fiyat: fiyat, foto: '/' + foto }); // ---> Buraya dikkat!
+    sepet.push({ isim: isim, fiyat: fiyat, foto: foto }); // sadece fotoğraf ismi
     localStorage.setItem('sepet', JSON.stringify(sepet));
     alert(isim + " sepete eklendi!");
 }
