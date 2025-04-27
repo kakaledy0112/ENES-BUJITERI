@@ -6,7 +6,9 @@
   <title>ENES BUJİTERİ</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
-</head>
+
+  <meta name="description" content="ENES BUJİTERİ - Şık yüzükler, kolyeler ve saatler uygun fiyatlarla. Güvenli alışverişin adresi.">
+  <meta name="keywords" content="ENES BUJİTERİ, yüzük, kolye, saat, takı, aksesuar, gümüş, altın, çelik, moda, uygun fiyat, güvenli alışveriş"></head>
 
 <body>
 
@@ -19,7 +21,14 @@
     <a href="#saatler">Saatler</a>
     <a href="sepet.html">Sepeti Görüntüle</a>
     <a href="favoriler.html">Favorilerim</a>
+    <a href="hakkimizda.html">Hakkımızda</a>
+    <a href="iletisim.html">İletişim</a>
   </nav>
+
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Ürün Ara...">
+    <button id="search-button">Ara</button>
+  </div>
 </header>
 
 <!-- DUYURU KUTUSU -->
@@ -173,6 +182,75 @@
 <!-- YUKARI ÇIK BUTONU -->
 <button id="yukari-btn" title="Yukarı Çık">↑</button>
 
+
+
+
+
+
+<!-- YENİ ÜRÜNLER BÖLÜMÜ -->
+<section id="yeni-urunler" class="product-section">
+  <h2>Yeni Ürünler</h2>
+  <div class="urunler">
+    <!-- Yeni Ürün 1 (Örnek - Mevcut ürünlerden seçilebilir veya yeni eklenebilir) -->
+    <div class="product">
+      <img src="yuzuk3.jpg" alt="Yeni Moda Yüzük">
+      <p>Yeni Moda Yüzük</p>
+      <div class="urun-yildiz">⭐⭐⭐⭐☆</div>
+      <span class="favori-icon" onclick="favorilereEkle('Yeni Moda Yüzük', 299, 'yuzuk3.jpg')">❤️</span>
+      <p>299 TL</p>
+      <button class="sepet-button" onclick="sepeteEkle('Yeni Moda Yüzük', 299, 'yuzuk3.jpg')">Sepete Ekle</button>
+    </div>
+    <!-- Yeni Ürün 2 -->
+     <div class="product">
+      <img src="kolye3.jpg" alt="Trend Kolye">
+      <p>Trend Kolye</p>
+      <div class="urun-yildiz">⭐⭐⭐⭐⭐</div>
+      <span class="favori-icon" onclick="favorilereEkle('Trend Kolye', 449, 'kolye3.jpg')">❤️</span>
+      <p>449 TL</p>
+      <button class="sepet-button" onclick="sepeteEkle('Trend Kolye', 449, 'kolye3.jpg')">Sepete Ekle</button>
+    </div>
+  </div>
+</section>
+
+<!-- ÇOK SATANLAR BÖLÜMÜ -->
+<section id="cok-satanlar" class="product-section">
+  <h2>Çok Satanlar</h2>
+  <div class="urunler">
+    <!-- Çok Satan 1 (Örnek - Mevcut ürünlerden seçilebilir) -->
+     <div class="product">
+      <img src="saat1.jpg" alt="Klasik Deri Saat">
+      <p>Klasik Deri Saat</p>
+      <div class="urun-yildiz">⭐⭐⭐⭐☆</div>
+      <span class="favori-icon" onclick="favorilereEkle('Klasik Deri Saat', 799, 'saat1.jpg')">❤️</span>
+      <p>799 TL</p>
+      <button class="sepet-button" onclick="sepeteEkle('Klasik Deri Saat', 799, 'saat1.jpg')">Sepete Ekle</button>
+    </div>
+    <!-- Çok Satan 2 -->
+    <div class="product">
+      <img src="yuzuk2.jpg" alt="Modern Tasarım Yüzük">
+      <p>Modern Tasarım Yüzük</p>
+      <div class="urun-yildiz">⭐⭐⭐⭐⭐</div>
+      <span class="favori-icon" onclick="favorilereEkle('Modern Tasarım Yüzük', 199, 'yuzuk2.jpg')">❤️</span>
+      <p>199 TL</p>
+      <button class="sepet-button" onclick="sepeteEkle('Modern Tasarım Yüzük', 199, 'yuzuk2.jpg')">Sepete Ekle</button>
+    </div>
+  </div>
+</section>
+
+<!-- MÜŞTERİ YORUMLARI BÖLÜMÜ -->
+<section id="musteri-yorumlari" style="padding: 40px 20px; text-align: center; background-color: #ffe5e5; margin-top: 40px;">
+  <h2>Müşteri Yorumları</h2>
+  <div class="yorumlar" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;">
+    <div class="yorum" style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 300px; text-align: left;">
+      <p style="font-style: italic; color: #555;">"Ürünler harika ve çok hızlı geldi. Teşekkürler ENES BUJİTERİ!"</p>
+      <p style="font-weight: bold; margin-top: 10px;">- Ayşe Yılmaz</p>
+    </div>
+     <div class="yorum" style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 300px; text-align: left;">
+      <p style="font-style: italic; color: #555;">"Kolye çok zarif, bayıldım! Kesinlikle tekrar alışveriş yapacağım."</p>
+      <p style="font-weight: bold; margin-top: 10px;">- Fatma Demir</p>
+    </div>
+  </div>
+</section>
 <footer>
   <div class="iletisim">
     <a href="https://wa.me/90XXXXXXXXXX" target="_blank">WhatsApp</a> |
@@ -181,4 +259,5 @@
 </footer>
 
 </body>
-  </html>
+      </html>
+        
