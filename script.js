@@ -1,4 +1,4 @@
-// Ürün Stokları
+// Başlangıç Stoklar
 let baslangicStoklari = {
   "Şık Gümüş Yüzük": 5,
   "Modern Tasarım Yüzük": 7,
@@ -8,45 +8,36 @@ let baslangicStoklari = {
   "Şık Metal Saat": 2
 };
 
-// Başlangıçta stokları localStorage'a kaydet (ilk girişte)
+// localStorage başlangıcı
 if (!localStorage.getItem('urunStoklari')) {
   localStorage.setItem('urunStoklari', JSON.stringify(baslangicStoklari));
 }
 
-// localStorage'dan stokları alıyoruz
 let urunStoklari = JSON.parse(localStorage.getItem('urunStoklari'));
-
-// Sepeti localStorage'dan çekiyoruz (yoksa boş dizi)
 let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
 
-// Ürün sepete ekle
+// Sepete ürün ekle
 function sepeteEkle(isim, fiyat, foto) {
   if (urunStoklari[isim] > 0) {
-    sepet.push({ isim: isim, fiyat: fiyat, foto: foto });
+    sepet.push({ isim, fiyat, foto });
     localStorage.setItem('sepet', JSON.stringify(sepet));
 
-    // Stoğu azalt
     urunStoklari[isim]--;
     localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
 
     stokGuncelle();
-
-    // Mesaj göster
-    const mesaj = document.getElementById('sepet-mesaji');
-    if (mesaj) {
-      mesaj.style.display = 'block';
-    }
+    mesajGoster("✓ Ürün sepete eklendi!");
   } else {
     alert("Bu ürün tükendi!");
   }
 }
 
-// Sepeti göster
+// Sepeti görüntüle
 function sepetiGoster() {
   window.location.href = "sepet.html";
 }
 
-// Sepet sayfasında ürünleri listele
+// Sepeti listele
 function sepetiListele() {
   let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
   let sepetIcerik = document.getElementById('sepet-icerik');
@@ -89,13 +80,32 @@ function sepetiListele() {
   sepetIcerik.innerHTML = html;
 }
 
-// Sepeti ve stokları tamamen sıfırlama
+// Sepeti boşalt ve stokları sıfırla
 function sepetiBosalt() {
   localStorage.removeItem('sepet');
   localStorage.removeItem('urunStoklari');
 
-  alert("Sepet ve stoklar sıfırlandı!");
-  window.location.href = "index.html"; // Ana sayfaya dön
+  mesajGoster("✓ Sepet boşaltıldı!");
+
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 2500);
+}
+
+// Stokları güncelle
+function stokGuncelle() {
+  for (const isim in urunStoklari) {
+    const stokElement = document.getElementById('stok-' + isim);
+    if (stokElement) {
+      stokElement.textContent = urunStoklari[isim] > 0 ? `Stok: ${urunStoklari[isim]}` : "Tükendi";
+      const button = stokElement.parentElement.querySelector('.sepet-button');
+      if (urunStoklari[isim] <= 0) {
+        button.disabled = true;
+        button.textContent = "Tükendi";
+        button.style.backgroundColor = "#ccc";
+      }
+    }
+  }
 }
 
 // Ürün arama ve fiyat filtreleme
@@ -127,23 +137,29 @@ function urunleriFiltrele() {
   });
 }
 
-// Stokları güncelle
-function stokGuncelle() {
-  for (const isim in urunStoklari) {
-    const stokElement = document.getElementById('stok-' + isim);
-    if (stokElement) {
-      stokElement.textContent = urunStoklari[isim] > 0 ? `Stok: ${urunStoklari[isim]}` : "Tükendi";
-      const button = stokElement.parentElement.querySelector('.sepet-button');
-      if (urunStoklari[isim] <= 0) {
-        button.disabled = true;
-        button.textContent = "Tükendi";
-        button.style.backgroundColor = "#ccc";
-      }
-    }
+// Fade-in/fade-out mesaj göster
+function mesajGoster(text) {
+  const mesajKutusu = document.getElementById('sepet-mesaji');
+  const mesajIcerik = document.getElementById('sepet-mesaji-icerik');
+
+  if (mesajKutusu && mesajIcerik) {
+    mesajIcerik.innerText = text;
+    mesajKutusu.classList.add('fade-in');
+    mesajKutusu.classList.remove('fade-out');
+    mesajKutusu.style.display = 'block';
+
+    setTimeout(() => {
+      mesajKutusu.classList.remove('fade-in');
+      mesajKutusu.classList.add('fade-out');
+    }, 2000);
+
+    setTimeout(() => {
+      mesajKutusu.style.display = 'none';
+    }, 2500);
   }
 }
 
-// Sayfa açıldığında stokları ve sepeti kontrol et
+// Sayfa açıldığında
 window.onload = function() {
   stokGuncelle();
   if (window.location.pathname.includes('sepet.html')) {
