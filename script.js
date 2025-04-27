@@ -1,5 +1,5 @@
 // Ürün Stokları
-let urunStoklari = {
+let baslangicStoklari = {
   "Şık Gümüş Yüzük": 5,
   "Modern Tasarım Yüzük": 7,
   "İnci Kolye": 3,
@@ -8,38 +8,45 @@ let urunStoklari = {
   "Şık Metal Saat": 2
 };
 
-// Başlangıçta stokları kaydet
+// Başlangıçta stokları localStorage'a kaydet (ilk girişte)
 if (!localStorage.getItem('urunStoklari')) {
-  localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
-} else {
-  urunStoklari = JSON.parse(localStorage.getItem('urunStoklari'));
+  localStorage.setItem('urunStoklari', JSON.stringify(baslangicStoklari));
 }
 
-// Sepeti çek
+// localStorage'dan stokları alıyoruz
+let urunStoklari = JSON.parse(localStorage.getItem('urunStoklari'));
+
+// Sepeti localStorage'dan çekiyoruz (yoksa boş dizi)
 let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
 
-// Ürün ekleme
+// Ürün sepete ekle
 function sepeteEkle(isim, fiyat, foto) {
-  sepet.push({ isim: isim, fiyat: fiyat, foto: foto });
-  localStorage.setItem('sepet', JSON.stringify(sepet));
+  if (urunStoklari[isim] > 0) {
+    sepet.push({ isim: isim, fiyat: fiyat, foto: foto });
+    localStorage.setItem('sepet', JSON.stringify(sepet));
 
-  // Stoktan düş
-  urunStoklari[isim]--;
-  localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
+    // Stoğu azalt
+    urunStoklari[isim]--;
+    localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
 
-  stokGuncelle();
+    stokGuncelle();
 
-  // Mesajı göster
-  const mesaj = document.getElementById('sepet-mesaji');
-  mesaj.style.display = 'block';
+    // Mesaj göster
+    const mesaj = document.getElementById('sepet-mesaji');
+    if (mesaj) {
+      mesaj.style.display = 'block';
+    }
+  } else {
+    alert("Bu ürün tükendi!");
+  }
 }
 
-// Sepeti görüntüle
+// Sepeti göster
 function sepetiGoster() {
   window.location.href = "sepet.html";
 }
 
-// Sepeti listele (sepet.html için)
+// Sepet sayfasında ürünleri listele
 function sepetiListele() {
   let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
   let sepetIcerik = document.getElementById('sepet-icerik');
@@ -82,11 +89,42 @@ function sepetiListele() {
   sepetIcerik.innerHTML = html;
 }
 
-// Sepeti boşalt
+// Sepeti ve stokları tamamen sıfırlama
 function sepetiBosalt() {
   localStorage.removeItem('sepet');
-  alert("Sepet boşaltıldı!");
-  window.location.reload();
+  localStorage.removeItem('urunStoklari');
+
+  alert("Sepet ve stoklar sıfırlandı!");
+  window.location.href = "index.html"; // Ana sayfaya dön
+}
+
+// Ürün arama ve fiyat filtreleme
+function urunleriFiltrele() {
+  const arama = document.getElementById('arama') ? document.getElementById('arama').value.toLowerCase() : "";
+  const fiyatFiltre = document.getElementById('fiyat-filtre') ? document.getElementById('fiyat-filtre').value : "";
+
+  const tumUrunler = document.querySelectorAll('.product');
+
+  tumUrunler.forEach(urun => {
+    const isim = urun.querySelector('p').textContent.toLowerCase();
+    const fiyatMetin = urun.querySelectorAll('p')[1].textContent;
+    const fiyat = parseInt(fiyatMetin.replace('TL', '').trim());
+
+    let gorunur = true;
+
+    if (arama && !isim.includes(arama)) {
+      gorunur = false;
+    }
+
+    if (fiyatFiltre) {
+      const [min, max] = fiyatFiltre.split('-').map(Number);
+      if (fiyat < min || fiyat > max) {
+        gorunur = false;
+      }
+    }
+
+    urun.style.display = gorunur ? "block" : "none";
+  });
 }
 
 // Stokları güncelle
@@ -105,7 +143,7 @@ function stokGuncelle() {
   }
 }
 
-// Sayfa yüklenince stokları güncelle
+// Sayfa açıldığında stokları ve sepeti kontrol et
 window.onload = function() {
   stokGuncelle();
   if (window.location.pathname.includes('sepet.html')) {
