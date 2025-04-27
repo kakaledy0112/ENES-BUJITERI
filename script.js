@@ -27,6 +27,7 @@ function sepeteEkle(isim, fiyat, foto) {
         urunStoklari[isim]--;
         localStorage.setItem('urunStoklari', JSON.stringify(urunStoklari));
         stokGuncelle();
+        sepetVerisiniGoster();
 
         // Mesaj göster
         const mesajKutusu = document.getElementById('sepet-mesaji');
@@ -52,6 +53,8 @@ function sepetiGoster() {
 function sepetiListele() {
     let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
     let sepetIcerik = document.getElementById('sepet-icerik');
+
+    if (!sepetIcerik) return; // Eğer sepet-icerik yoksa çalışmaz
 
     if (sepet.length === 0) {
         sepetIcerik.innerHTML = "<p>Sepetiniz boş.</p>";
@@ -86,6 +89,7 @@ function urunSil(index) {
     sepet.splice(index, 1);
     localStorage.setItem('sepet', JSON.stringify(sepet));
     sepetiListele();
+    sepetVerisiniGoster();
 }
 
 // Sepeti boşalt
@@ -121,12 +125,10 @@ function urunleriFiltrele() {
 
         let gorunur = true;
 
-        // Arama filtresi
         if (arama && !isim.includes(arama)) {
             gorunur = false;
         }
 
-        // Fiyat filtresi
         if (fiyatFiltre) {
             const [min, max] = fiyatFiltre.split('-').map(Number);
             if (fiyat < min || fiyat > max) {
@@ -158,7 +160,16 @@ function stokGuncelle() {
     }
 }
 
-// Sayfa yüklenince stokları güncelle
+// Sepet Verisini Ekrana Yazdır
+function sepetVerisiniGoster() {
+    const testAlani = document.getElementById('test-alani');
+    if (testAlani) {
+        testAlani.innerText = localStorage.getItem('sepet') || "Sepet boş.";
+    }
+}
+
+// Sayfa açılınca
 window.onload = function() {
     stokGuncelle();
+    sepetVerisiniGoster();
 };
