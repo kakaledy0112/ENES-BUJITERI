@@ -31,11 +31,6 @@ function sepeteEkle(isim, fiyat, foto) {
   }
 }
 
-// Sepeti görüntüle
-function sepetiGoster() {
-  window.location.href = "sepet.html";
-}
-
 // Sepeti listele
 function sepetiListele() {
   let sepet = JSON.parse(localStorage.getItem('sepet')) || [];
@@ -107,7 +102,19 @@ function stokGuncelle() {
   }
 }
 
-// Fade-in/fade-out mesaj göster
+// Fade-in animasyonu
+function fadeInUrunler() {
+  const urunler = document.querySelectorAll('.product');
+
+  urunler.forEach(urun => {
+    const rect = urun.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 50) {
+      urun.classList.add('show');
+    }
+  });
+}
+
+// Mesaj kutusu göster
 function mesajGoster(text) {
   const mesajKutusu = document.getElementById('sepet-mesaji');
   const mesajIcerik = document.getElementById('sepet-mesaji-icerik');
@@ -157,7 +164,69 @@ function urunDetayGoster() {
   }
 }
 
-// Slider (resim geçişi)
+// Favorilere ürün ekle
+function favorilereEkle(isim, fiyat, foto) {
+  let favoriler = JSON.parse(localStorage.getItem('favoriler')) || [];
+
+  const zatenVar = favoriler.some(fav => fav.isim === isim);
+
+  if (!zatenVar) {
+    favoriler.push({ isim, fiyat, foto });
+    localStorage.setItem('favoriler', JSON.stringify(favoriler));
+    mesajGoster("✓ Ürün favorilere eklendi!");
+  } else {
+    mesajGoster("Bu ürün zaten favorilerde!");
+  }
+
+  const ikonlar = document.querySelectorAll('.favori-icon');
+  ikonlar.forEach(ikon => {
+    if (ikon.getAttribute('onclick').includes(isim)) {
+      ikon.classList.add('aktif');
+    }
+  });
+}
+
+// Favorileri listele
+function favorileriListele() {
+  let favoriler = JSON.parse(localStorage.getItem('favoriler')) || [];
+  const favorilerIcerik = document.getElementById('favoriler-icerik');
+
+  if (!favorilerIcerik) return;
+
+  if (favoriler.length === 0) {
+    favorilerIcerik.innerHTML = "<p>Favorileriniz boş.</p>";
+    return;
+  }
+
+  let html = '<div class="urunler">';
+  favoriler.forEach(urun => {
+    html += `
+      <div class="product">
+        <img src="${urun.foto}" alt="${urun.isim}" style="width:100%; border-radius:10px;">
+        <p>${urun.isim}</p>
+        <div class="urun-yildiz">⭐⭐⭐⭐⭐</div>
+        <p>${urun.fiyat} TL</p>
+        <button class="sepet-button" style="margin-top:8px; background-color:#ff6666;" onclick="favoridenCikar('${urun.isim}')">Favoriden Çıkar</button>
+      </div>
+    `;
+  });
+  html += '</div>';
+
+  favorilerIcerik.innerHTML = html;
+}
+
+// Favoriden çıkar
+function favoridenCikar(isim) {
+  let favoriler = JSON.parse(localStorage.getItem('favoriler')) || [];
+  favoriler = favoriler.filter(fav => fav.isim !== isim);
+  localStorage.setItem('favoriler', JSON.stringify(favoriler));
+
+  mesajGoster("✓ Ürün favorilerden çıkarıldı!");
+
+  favorileriListele();
+}
+
+// Slider
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 
@@ -173,6 +242,29 @@ function nextSlide() {
 
 setInterval(nextSlide, 3000);
 
+// Yukarı Çık Butonu
+const yukariBtn = document.getElementById("yukari-btn");
+
+window.onscroll = function() {
+  if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+    yukariBtn.style.display = "block";
+  } else {
+    yukariBtn.style.display = "none";
+  }
+
+  fadeInUrunler();
+};
+
+yukariBtn.addEventListener('click', function() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Menü Aç Kapa
+function menuAcKapa() {
+  const menu = document.getElementById("menu");
+  menu.classList.toggle("acik");
+}
+
 // Sayfa yüklenince çalışacaklar
 window.onload = function() {
   stokGuncelle();
@@ -184,4 +276,10 @@ window.onload = function() {
   if (window.location.pathname.includes('urun-detay.html')) {
     urunDetayGoster();
   }
-};
+
+  if (window.location.pathname.includes('favoriler.html')) {
+    favorileriListele();
+  }
+
+  fadeInUrunler();
+      }
