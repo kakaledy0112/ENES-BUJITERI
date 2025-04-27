@@ -72,10 +72,45 @@ function sepetiBosalt() {
 
         setTimeout(() => {
             mesajKutusu.style.display = 'none';
-            window.location.reload(); // mesajdan sonra sayfa yenile
+            window.location.reload();
         }, 2000);
     } else {
         alert("Sepet boşaltıldı!");
         window.location.reload();
     }
+}
+
+// Ürün Arama ve Fiyat Filtreleme
+function urunleriFiltrele() {
+    const arama = document.getElementById('arama').value.toLowerCase();
+    const fiyatFiltre = document.getElementById('fiyat-filtre').value;
+
+    const tumUrunler = document.querySelectorAll('.product');
+
+    tumUrunler.forEach(urun => {
+        const isim = urun.querySelector('p').textContent.toLowerCase();
+        const fiyatMetin = urun.querySelectorAll('p')[1].textContent;
+        const fiyat = parseInt(fiyatMetin.replace('TL', '').trim());
+
+        let gorunur = true;
+
+        // Arama filtresi
+        if (arama && !isim.includes(arama)) {
+            gorunur = false;
+        }
+
+        // Fiyat filtresi
+        if (fiyatFiltre) {
+            const [min, max] = fiyatFiltre.split('-').map(Number);
+            if (fiyat < min || fiyat > max) {
+                gorunur = false;
+            }
+        }
+
+        if (gorunur) {
+            urun.style.display = "block";
+        } else {
+            urun.style.display = "none";
+        }
+    });
         }
