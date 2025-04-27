@@ -167,7 +167,6 @@ function urunDetayGoster() {
 // Favorilere ürün ekle
 function favorilereEkle(isim, fiyat, foto) {
   let favoriler = JSON.parse(localStorage.getItem('favoriler')) || [];
-
   const zatenVar = favoriler.some(fav => fav.isim === isim);
 
   if (!zatenVar) {
@@ -180,7 +179,7 @@ function favorilereEkle(isim, fiyat, foto) {
 
   const ikonlar = document.querySelectorAll('.favori-icon');
   ikonlar.forEach(ikon => {
-    if (ikon.getAttribute('onclick').includes(isim)) {
+    if (ikon.getAttribute('onclick')?.includes(isim)) {
       ikon.classList.add('aktif');
     }
   });
@@ -222,8 +221,29 @@ function favoridenCikar(isim) {
   localStorage.setItem('favoriler', JSON.stringify(favoriler));
 
   mesajGoster("✓ Ürün favorilerden çıkarıldı!");
-
   favorileriListele();
+}
+
+// Ürünlere favori ikonu ekle
+function urunlereFavoriIkonEkle() {
+  const urunler = document.querySelectorAll('.product');
+
+  urunler.forEach(urun => {
+    const isim = urun.querySelector('p')?.innerText;
+    const fiyatText = urun.querySelectorAll('p')[1]?.innerText;
+    const foto = urun.querySelector('img')?.src;
+
+    if (isim && fiyatText && foto) {
+      const fiyat = parseFloat(fiyatText.replace(' TL', '').replace(',', '.'));
+
+      let favoriIcon = document.createElement('span');
+      favoriIcon.innerHTML = '❤';
+      favoriIcon.classList.add('favori-icon');
+      favoriIcon.setAttribute('onclick', `favorilereEkle('${isim}', ${fiyat}, '${foto}')`);
+
+      urun.appendChild(favoriIcon);
+    }
+  });
 }
 
 // Slider
@@ -281,5 +301,6 @@ window.onload = function() {
     favorileriListele();
   }
 
+  urunlereFavoriIkonEkle();
   fadeInUrunler();
-}
+};
