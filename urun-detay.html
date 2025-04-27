@@ -5,27 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ürün Detayı - ENES BUJİTERİ</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="images/logo1.png">
   <script src="script.js" defer></script>
 </head>
 
 <body>
 
 <header>
-  <a href="index.html">
-    <img src="images/logo.png" alt="ENES BUJİTERİ" style="height: 80px;">
-  </a>
+  <h1>Ürün Detayı</h1>
+  <button class="menu-toggle" onclick="menuAcKapa()">☰</button>
+  <nav id="menu">
+    <a href="index.html">Ana Sayfa</a>
+    <a href="sepet.html">Sepetim</a>
+    <a href="favoriler.html">Favorilerim</a>
+  </nav>
 </header>
 
-<main>
-  <div id="urun-detay" class="urun-detay">
-    <img id="detay-foto" src="" alt="Ürün Fotoğrafı" class="urun-detay-foto">
-    <h1 id="detay-isim">Ürün İsmi</h1>
-    <p id="detay-fiyat">Fiyat: </p>
-    <p id="detay-aciklama">Ürün Açıklaması</p>
-    <button id="sepete-ekle-btn" class="sepet-button" onclick="detaydanSepeteEkle()">Sepete Ekle</button>
+<main style="padding: 20px; text-align: center;">
+  <div id="urun-detay" style="max-width: 400px; margin: 0 auto;">
+    <!-- Ürün detayları burada script.js ile yüklenecek -->
   </div>
 </main>
+
+<!-- YUKARI ÇIK BUTONU -->
+<button id="yukari-btn" title="Yukarı Çık">↑</button>
 
 <footer>
   <div class="iletisim">
@@ -33,25 +35,6 @@
     <a href="https://instagram.com/XXXXXXXX" target="_blank">Instagram</a>
   </div>
 </footer>
-
-<script>
-  // URL parametrelerinden verileri al
-  const urlParams = new URLSearchParams(window.location.search);
-  const isim = urlParams.get('isim');
-  const fiyat = urlParams.get('fiyat');
-  const foto = urlParams.get('foto');
-  const aciklama = urlParams.get('aciklama');
-
-  // Verileri sayfaya aktar
-  document.getElementById('detay-isim').textContent = isim;
-  document.getElementById('detay-fiyat').textContent = 'Fiyat: ' + fiyat + ' TL';
-  document.getElementById('detay-foto').src = foto;
-  document.getElementById('detay-aciklama').textContent = decodeURIComponent(aciklama);
-
-  function detaydanSepeteEkle() {
-    sepeteEkle(isim, fiyat, foto);
-  }
-</script>
 
 </body>
 </html>
